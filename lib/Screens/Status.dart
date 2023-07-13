@@ -14,7 +14,8 @@ class Status extends StatefulWidget {
 }
 
 class _StatusState extends State<Status> {
-
+  double height=0;
+  double width=0;
 
 
 
@@ -23,32 +24,34 @@ class _StatusState extends State<Status> {
 
   @override
   Widget build(BuildContext context) {
+    height=MediaQuery.of(context).size.height;
+    width=MediaQuery.of(context).size.width;
     return SafeArea(child:Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff3854DC),
-        leading:  Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset("assets/arrow.png",width: 10,),
+        appBar: AppBar(
+          backgroundColor: const Color(0xff3854DC),
+          leading:  Padding(
+            padding:  EdgeInsets.only(left: width* 0.05092686901 ),
+            child: Image.asset("assets/arrow.png",width: width* 0.0254634345 ,),
+          ),
+          title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
+          centerTitle: true,
+          actions: [ Padding(
+            padding:  EdgeInsets.only(right:  width* 0.05092686901 ),
+            child: Image.asset("assets/noti.png",width: width* 0.07639030352 ,),
+          )],
         ),
-        title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
-        centerTitle: true,
-        actions: [ Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Image.asset("assets/noti.png",width: 30,),
-        )],
-      ),
       body:SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              height: 60,
+              height: height*0.07268762493  ,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color(0xffF7F6F6),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 13,left: 20),
+                padding:  EdgeInsets.only(top: height*0.0157489854,left: width* 0.05092686901),
                 child: Text("Your Status",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400,color: Color(0xff000000)),),
               ),
             ),
@@ -58,7 +61,7 @@ class _StatusState extends State<Status> {
               children: [
                 InkWell(
                   onTap: (){
-                    
+
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Enrolledevent()));
                   },
                   child: Container(
@@ -68,7 +71,7 @@ class _StatusState extends State<Status> {
 
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 30),
+                      padding:  EdgeInsets.symmetric(horizontal: width* 0.0254634345 ,vertical: height*0.03634381246),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -76,11 +79,11 @@ class _StatusState extends State<Status> {
                           Align(
                               alignment: Alignment.topLeft,
                               child: Text("Enrollment in Events",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 18),)),
-                          SizedBox(height: 20,),
+                          SizedBox(height: height* 0.02422920831 ,),
                           Image.asset("assets/Status1.png"),
-                          SizedBox(height: 10,),
+                          SizedBox(height: height*0.01211460415 ,),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding:  EdgeInsets.symmetric(horizontal: width*0.0254634345 ),
                             child: Column(
                               children: [
                                 Row(
@@ -89,26 +92,26 @@ class _StatusState extends State<Status> {
                                     Spacer(),
                                     Column(
                                       children: [
-                                        Image.asset("assets/ball G.png",width: 30,),
+                                        Image.asset("assets/ball G.png",width: width* 0.07639030352 ,),
                                         Text("Mighty Ducks",style: TextStyle(color: Color(0xff000000),fontSize: 8,fontWeight: FontWeight.w400),)
                                       ],
                                     )
                                   ],
                                 ),
-                                SizedBox(height: 2,),
+                                SizedBox(height: height* 0.00242292083,),
                                 Row(
                                   children: [
                                     Text("14 / 24 members",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 12)),
-                                    SizedBox(width: 20,),
+                                    SizedBox(width: width*0.05092686901,),
                                     Text("Date: XX-XX-XXXX",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 12),),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text("Start-time: 11: 00am",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 12)),
-                                    SizedBox(width: 20,),
-                                    Image.asset("assets/loc.png",width: 10,),
-                                    SizedBox(width: 2,),
+                                    SizedBox(width: width*0.05092686901,),
+                                    Image.asset("assets/loc.png",width: width* 0.0254634345 ,),
+                                    SizedBox(width: width*0.0050926869,),
                                     Text("Location: new plaza bahria town, islamabad",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 10),),
                                   ],
                                 ),
@@ -120,18 +123,20 @@ class _StatusState extends State<Status> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: height* 0.02422920831,),
                 InkWell(
                   onTap: (){
+
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Eventshowcase()));
                   },
                   child: Container(
                     decoration: BoxDecoration(
                       color: Color(0xffFFFFFF),
                       borderRadius: BorderRadius.circular(10),
+
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 30),
+                      padding:  EdgeInsets.symmetric(horizontal: width* 0.0254634345 ,vertical: height*0.03634381246),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -139,46 +144,46 @@ class _StatusState extends State<Status> {
                           Align(
                               alignment: Alignment.topLeft,
                               child: Text("Events Created",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 18),)),
-                          SizedBox(height: 20,),
+                          SizedBox(height: height* 0.02422920831 ,),
                           Image.asset("assets/Status2.png"),
-                          SizedBox(height: 10,),
+                          SizedBox(height: height*0.01211460415 ,),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding:  EdgeInsets.symmetric(horizontal: width*0.0254634345 ),
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Text("Test Match",style: TextStyle(color: Color(0xff000000),fontSize: 18,fontWeight: FontWeight.w400),),
                                     Spacer(),
-                                    Column(
-                                      children: [
-                                        Image.asset("assets/Status3.png",width: 30,),
-                                        Text("Titans",style: TextStyle(color: Color(0xff000000),fontSize: 8,fontWeight: FontWeight.w400),)
-                                      ],
-                                    ),
-                                    SizedBox(width: 20,),
-                                    Column(
-                                      children: [
-                                        Image.asset("assets/Status4.png",width: 30,),
-                                        Text("Roar",style: TextStyle(color: Color(0xff000000),fontSize: 8,fontWeight: FontWeight.w400),)
-                                      ],
-                                    ),
+                            Column(
+                                                    children: [
+                                                      Image.asset("assets/Status3.png",width: width*0.07639030352 ,),
+                                                      Text("Titans",style: TextStyle(color: Color(0xff000000),fontSize: 8,fontWeight: FontWeight.w400),)
+                                                    ],
+                                                  ),
+                                                  SizedBox(width: width*0.05092686901,),
+                                                  Column(
+                                                    children: [
+                                                      Image.asset("assets/Status4.png",width:width*0.07639030352,),
+                                                      Text("Roar",style: TextStyle(color: Color(0xff000000),fontSize: 8,fontWeight: FontWeight.w400),)
+                                                    ],
+                                                  ),
                                   ],
                                 ),
-                                SizedBox(height: 2,),
+                                SizedBox(height: height* 0.00242292083,),
                                 Row(
                                   children: [
                                     Text("14 / 24 members",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 12)),
-                                    SizedBox(width: 20,),
+                                    SizedBox(width: width*0.05092686901,),
                                     Text("Date: XX-XX-XXXX",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 12),),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text("Start-time: 11: 00am",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 12)),
-                                    SizedBox(width: 20,),
-                                    Image.asset("assets/loc.png",width: 10,),
-                                    SizedBox(width: 2,),
+                                    SizedBox(width: width*0.05092686901,),
+                                    Image.asset("assets/loc.png",width: width* 0.0254634345 ,),
+                                    SizedBox(width: width*0.0050926869,),
                                     Text("Location: new plaza bahria town, islamabad",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 10),),
                                   ],
                                 ),
@@ -190,6 +195,7 @@ class _StatusState extends State<Status> {
                     ),
                   ),
                 ),
+
               ],
             ),
           )

@@ -3,10 +3,14 @@ import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
 
 class Message extends StatelessWidget {
-  const Message({super.key});
+  Message({super.key});
+  double height=0;
+  double width=0;
 
   @override
   Widget build(BuildContext context) {
+    height=MediaQuery.of(context).size.height;
+    width=MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -14,23 +18,23 @@ class Message extends StatelessWidget {
           height: double.infinity,
           color: Color(0xff3854DC),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+            padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 , vertical: height*0.02422920831),
             child: Column(
               children: [
                 Container(
                     alignment: Alignment.centerRight,
 
-                    child: Image.asset("assets/cross.png",width: 20,)),
-                SizedBox(height: 20,),
-                Image.asset("assets/boy.png",width: 320,),
-                SizedBox(height: 20,),
+                    child: Image.asset("assets/cross.png",width:width* 0.05092686901,)),
+                SizedBox(height: height*0.02422920831,),
+                Image.asset("assets/boy.png",width: width*0.81482990425,),
+                SizedBox(height: height*0.02422920831,),
                 Text("CONGRATULATIONS",style: TextStyle(color: Color(0xffFFFFFF),fontSize: 30,fontWeight: FontWeight.w400),),
-                SizedBox(height: 10,),
+                SizedBox(height: height* 0.01211460415 ,),
                 Text("The event has been created.",style: TextStyle(color: Color(0xffFFFFFF),fontSize: 20,fontWeight: FontWeight.w400),),
                 Padding(
-                  padding: const EdgeInsets.only(top: 150),
+                  padding: EdgeInsets.only(top: height*0.18171906233),
                   child: Container(
-                    height: 40,
+                    height: height*0.04845841662 ,
 
                     decoration: BoxDecoration(
                       color: Color(0xffFFFFFFDB),

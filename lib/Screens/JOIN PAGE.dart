@@ -42,7 +42,7 @@ class _JoinpageState extends State<Joinpage> {
               width: double.infinity,
               height: height* 0.28012773824,
               child: Image.asset(
-                "assets/bat.png",
+                "assets/Status5.png",
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -50,7 +50,7 @@ class _JoinpageState extends State<Joinpage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 boxShadow:  [
                   BoxShadow(

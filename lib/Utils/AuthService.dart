@@ -7,13 +7,13 @@ class FirebaseServices {
   static String errorMessage = "";
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static Future<void> signUp(String email, String password, String cpass,
+  static Future<void> signUp(String email, String password, String username,
       ) async {
     try {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) =>
-      {postDetailsToFirestore( password, cpass,)})
+      {postDetailsToFirestore( password, username,)})
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
@@ -52,7 +52,7 @@ class FirebaseServices {
   }
 
   static postDetailsToFirestore(
-       String password, String cpass) async {
+       String password, String username) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
@@ -64,7 +64,7 @@ class FirebaseServices {
       "uid": user.uid,
       "password": password,
 
-      "cpass": cpass,
+      "username": username,
 
     });
     Fluttertoast.showToast(msg: "Account created successfully ");

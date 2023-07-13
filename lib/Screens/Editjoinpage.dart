@@ -1,21 +1,17 @@
-import 'package:cricket_app/HOME.dart';
-import 'package:cricket_app/JOIN%20PAGE.dart';
-import 'package:cricket_app/main.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'Editjoinpage.dart';
-import 'Leave confirm.dart';
+import 'Confirmation page.dart';
+import 'Informationadded.dart';
 
-class Enrolledevent extends StatefulWidget {
-  const Enrolledevent({Key? key});
+class Editjoinpage extends StatefulWidget {
+  const Editjoinpage({Key? key});
 
   @override
-  State<Enrolledevent> createState() => _EnrolledeventState();
+  State<Editjoinpage> createState() => _EditjoinpageState();
 }
 
-class _EnrolledeventState extends State<Enrolledevent> {
+class _EditjoinpageState extends State<Editjoinpage> {
   int _age = 12; // Initial age value
 
   @override
@@ -41,7 +37,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
               width: double.infinity,
               height: 250,
               child: Image.asset(
-                "assets/bat.png",
+                "assets/Status5.png",
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -49,7 +45,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 boxShadow:  [
                   BoxShadow(
@@ -132,16 +128,6 @@ class _EnrolledeventState extends State<Enrolledevent> {
                 padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>Editjoinpage()));
-                          },
-                            child: Image.asset("assets/edit.png",width: 20,))),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -152,7 +138,15 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               fontWeight: FontWeight.w400,
                               fontSize: 18),
                         ),
-
+                        Column(
+                          children: [
+                            Image.asset(
+                              "assets/Elli G.png",
+                              width: 50,
+                            ),
+                            const Text("Rising Stars"),
+                          ],
+                        ),
                         Column(
                           children: [
                             Image.asset(
@@ -179,7 +173,6 @@ class _EnrolledeventState extends State<Enrolledevent> {
                         ),
                         Container(
                           width: 180,
-                          height: 40,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.white,
@@ -193,13 +186,14 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             ],
                             shape: BoxShape.rectangle,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10,top: 5),
-                            child: Text("Cereal Killer",style: TextStyle(
-                                color: Color(0xff989696),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400),
-
+                          child: TextField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 10),
+                              hintText: "Cereal Killer",
+                              hintStyle: TextStyle(
+                                  color: Color(0xff989696),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         )
@@ -313,77 +307,23 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             ],
                             shape: BoxShape.rectangle,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5,top: 10),
-                            child: Text("0000-0000000",style:TextStyle(
-                                color: Color(0xff989696),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400),
-
+                          child: TextField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 10),
+                              hintText: "0000-0000000",
+                              hintStyle: TextStyle(
+                                  color: Color(0xff989696),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20,),
-                    RoundButton(
-                      title: "LEAVE EVENT",
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            backgroundColor: Color(0xff3854DC),
-                            title: Center(child: Image.asset("assets/boy.png", width: 100)),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("Are you sure you want to leave", style: TextStyle(fontSize: 16,   color: Color(0xffFFFFFFDB),)),
-                                Text("the event?", style: TextStyle(fontSize: 16,   color: Color(0xffFFFFFFDB),)),
-                              ],
-                            ),
-                            actions: [
-                              Container(
-                                width: 120,
-                                height: 40,
-                                color: Color(0xffFFFFFFDB),
-                                child: TextButton(
-                                  onPressed: () {
-                                    // Perform the log out action here
-                                    // For example, you can call a log out function or navigate to the log out screen
-                                    // ...
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Leaveconfirm()));// Close the alert dialog
-                                  },
-                                  child: Text(
-                                    "Yes,I am sure.",
-                                    style:
-                                      TextStyle(color: Color(0xff0C0C0C),fontSize: 10,fontWeight: FontWeight.w400),
-
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 120,
-                                height: 40,
-                                color: Color(0xffFFFFFFDB),
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // Close the alert dialog
-                                  },
-                                  child: Text(
-                                    "No, I am not sure",
-                                    style: TextStyle(color: Color(0xff0C0C0C),fontWeight: FontWeight.w400,fontSize: 10),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      color: Color(0xff3854DC),
-                    )
-
-
+                    const SizedBox(height: 10,),
+                    RoundButton(title: "SAVE", onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> EditedConfirmation()));
+                    }, color: Color(0xff3854DC),)
                   ],
                 ),
               ),

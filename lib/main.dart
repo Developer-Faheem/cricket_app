@@ -1,20 +1,16 @@
-import 'package:cricket_app/Create%20events.dart';
-import 'package:cricket_app/HOME.dart';
+
+import 'package:cricket_app/Screens/Profile.dart';
+import 'package:cricket_app/Screens/Status.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'Choice/Choice.dart';
-import 'Confirmation page.dart';
-import 'Edit message.dart';
-import 'Informationadded.dart';
-import 'Enrolled event.dart';
-import 'JOIN PAGE.dart';
-import 'Leave confirm.dart';
-import 'Mesage event.dart';
-import 'Profile.dart';
-import 'Serach page.dart';
-import 'Status.dart';
-import 'delete confirm.dart';
+import 'Screens/Create events.dart';
+import 'Screens/HOME.dart';
+import 'Screens/Serach page.dart';
+import 'Screens/Startup1.dart';
+
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +46,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:    Choice(),
+      home:     Startup1(),
     );
   }
 }
