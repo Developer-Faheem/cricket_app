@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../main.dart';
 
@@ -52,9 +53,9 @@ class OnbaordingState extends State<Onbaording> {
                 ),
               ),
             ),
-            Center(child: Text("CricSpotter",style: TextStyle(color: Color(0xff3854DC),fontSize: 50,fontWeight: FontWeight.w400),)),
+            Center(child: Text("CricSpotter",style: TextStyle(color: Color(0xff3854DC),fontSize: 40.sp,fontWeight: FontWeight.w400),)),
             SizedBox(height: height*0.01211460415 ,),
-            Center(child: Text("LOADING...",style: TextStyle(color: Color(0xff000000),fontSize: 12,fontWeight: FontWeight.w400),)),
+            Center(child: Text("LOADING...",style: TextStyle(color: Color(0xff000000),fontSize: 12.sp,fontWeight: FontWeight.w400),)),
           ],
         ),
       ),

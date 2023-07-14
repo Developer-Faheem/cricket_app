@@ -1,8 +1,8 @@
-
 import 'package:cricket_app/main.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import 'Editjoinpage.dart';
 import 'Leave confirm.dart';
@@ -15,30 +15,48 @@ class Enrolledevent extends StatefulWidget {
 }
 
 class _EnrolledeventState extends State<Enrolledevent> {
+  double height = 0;
+  double width = 0;
   int _age = 12; // Initial age value
 
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff3854DC),
-        leading:  Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset("assets/arrow.png",width: 10,),
+        leading: Padding(
+          padding: EdgeInsets.only(left: width * 0.05092686901),
+          child: Image.asset(
+            "assets/arrow.png",
+            width: width * 0.0254634345,
+          ),
         ),
-        title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
+        title: Text(
+          "CricSpotter",
+          style: TextStyle(
+              color: Color(0xffFFFFFF),
+              fontWeight: FontWeight.w400,
+              fontSize: 24.sp),
+        ),
         centerTitle: true,
-        actions: [ Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Image.asset("assets/noti.png",width: 30,),
-        )],
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(left: width * 0.05092686901),
+            child: Image.asset(
+              "assets/noti.png",
+              width: width * 0.07639030352,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               width: double.infinity,
-              height: 250,
+              height: height* 0.28012773824,
               child: Image.asset(
                 "assets/Status5.png",
                 width: double.infinity,
@@ -48,7 +66,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(width*0.0254634345 /2 + height*0.01211460415 /2),
                 color: Colors.white,
                 boxShadow:  [
                   BoxShadow(
@@ -61,63 +79,63 @@ class _EnrolledeventState extends State<Enrolledevent> {
                 shape: BoxShape.rectangle,
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                padding:  EdgeInsets.only(left:width*0.05092686901  , top: height*0.01211460415, bottom: height*0.01211460415),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Test Match",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 24,
+                          fontSize: 24.sp,
                           fontWeight: FontWeight.w400),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "14 / 24 members",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 14,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(
-                          width: 30,
+                        SizedBox(
+                          width: width*0.07639030352 ,
                         ),
-                        const Text(
+                        Text(
                           "Date: XX-XX-XXXX",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         )
                       ],
                     ),
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           "Start-time: 11: 00am",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 14,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(
-                          width: 12,
+                        SizedBox(
+                          width: width* 0.0305561214,
                         ),
                         Image.asset(
                           "assets/loc.png",
-                          width: 15,
+                          width: width*0.03819515176,
                         ),
-                        const SizedBox(
-                          width: 2,
+                        SizedBox(
+                          width: width*0.0050926869,
                         ),
-                        const Text(
+                        Text(
                           "Location: new plaza bahria town, islamabad",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 10,
+                              fontSize: 8.sp,
                               fontWeight: FontWeight.w400),
                         )
                       ],
@@ -128,59 +146,66 @@ class _EnrolledeventState extends State<Enrolledevent> {
             ),
             Container(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+
+                padding:  EdgeInsets.symmetric(vertical: height*0.04845841662, horizontal: width*0.05092686901 ),
                 child: Column(
                   children: [
                     Align(
-                      alignment: Alignment.topRight,
+                        alignment: Alignment.topRight,
                         child: InkWell(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>Editjoinpage()));
-                          },
-                            child: Image.asset("assets/edit.png",width: 20,))),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Editjoinpage()));
+                            },
+                            child: Image.asset(
+                              "assets/edit.png",
+                              width: 8.w,
+                            ))),
                     SizedBox(
-                      height: 10,
+                      height: 1.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Choose Your team:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
-
                         Column(
                           children: [
                             Image.asset(
                               "assets/ball G.png",
-                              width: 50,
+                              width: width*0.12731717254,
                             ),
                             const Text("Mighty Ducks"),
                           ],
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: height*0.02422920831 ,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Enter Your name:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Container(
-                          width: 180,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                          width: width*0.45834182114,
+                          height: height*0.04845841662,
+
+                            decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                             color: Colors.white,
                             boxShadow:  [
                               BoxShadow(
@@ -193,39 +218,40 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             shape: BoxShape.rectangle,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 10,top: 5),
-                            child: Text("Cereal Killer",style: TextStyle(
-                                color: Color(0xff989696),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400),
-
+                            padding:  EdgeInsets.only(left: width*0.0254634345 , top:height*0.00605730207 ),
+                            child: Text(
+                              "Cereal Killer",
+                              style: TextStyle(
+                                  color: Color(0xff989696),
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
+                     SizedBox(
+                      height: height*0.02422920831 ,
                     ),
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           "Enter Your age:",
                           style: TextStyle(
                             color: Color(0xff000000),
                             fontWeight: FontWeight.w400,
-                            fontSize: 18,
+                            fontSize: 15.sp,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding:  EdgeInsets.only(left: width* 0.05092686901 ),
                           child: Container(
-                            width: 92.5,
-                            height: 41,
+                            width: width*0.23553676919,
+                            height: height*0.04966987703,
 
 
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                               color: Colors.white,
                               boxShadow:  [
                                 BoxShadow(
@@ -240,11 +266,11 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: 30,
+                                  width: width*0.07639030352 ,
                                   child: Center(child: Text("$_age")),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 20,top: 4),
+                                  padding:  EdgeInsets.only(left: width*0.05092686901,top: height*0.00484425713),
                                   child: Container(
 
 
@@ -259,8 +285,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                               });
                                             },
 
-                                            child: Image.asset("assets/Vector 5.png",width: 20,)),
-                                        SizedBox(height: 5,),
+                                            child: Image.asset("assets/Vector 5.png",width: width*0.05092686901,)),
+                                        SizedBox(height: height*0.00605730207,),
 
                                         InkWell(
                                             onTap: () {
@@ -269,7 +295,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                               });
                                             },
 
-                                            child: Image.asset("assets/Vector 6.png",width: 20,)),
+                                            child: Image.asset("assets/Vector 6.png",width: width* 0.05092686901 ,)),
 
 
                                       ],
@@ -282,25 +308,24 @@ class _EnrolledeventState extends State<Enrolledevent> {
                         ),
                       ],
                     ),
-
                     SizedBox(
-                      height: 20,
+                      height: height*0.02422920831 ,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Enter Phone-no:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Container(
-                          width: 180,
-                          height: 50,
+                          width: width*0.45834182114,
+                          height: height*0.06057302077,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                             color: Colors.white,
                             boxShadow:  [
                               BoxShadow(
@@ -313,18 +338,21 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             shape: BoxShape.rectangle,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 5,top: 10),
-                            child: Text("0000-0000000",style:TextStyle(
-                                color: Color(0xff989696),
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400),
-
+                            padding:  EdgeInsets.only(left: width*0.01273171725, top: height* 0.01211460415 ),
+                            child: Text(
+                              "0000-0000000",
+                              style: TextStyle(
+                                  color: Color(0xff989696),
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20,),
+                    SizedBox(
+                      height: height*0.02422920831 ,
+                    ),
                     RoundButton(
                       title: "LEAVE EVENT",
                       onTap: () {
@@ -332,46 +360,65 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           context: context,
                           builder: (context) => AlertDialog(
                             backgroundColor: Color(0xff3854DC),
-                            title: Center(child: Image.asset("assets/boy.png", width: 100)),
+                            title: Center(
+                                child:
+                                    Image.asset("assets/boy.png", width:width*0.25463434508)),
                             content: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("Are you sure you want to leave", style: TextStyle(fontSize: 16,   color: Color(0xffFFFFFFDB),)),
-                                Text("the event?", style: TextStyle(fontSize: 16,   color: Color(0xffFFFFFFDB),)),
+                                Text("Are you sure you want to leave",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Color(0xffFFFFFFDB),
+                                    )),
+                                Text("the event?",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Color(0xffFFFFFFDB),
+                                    )),
                               ],
                             ),
                             actions: [
                               Container(
-                                width: 120,
-                                height: 40,
+                                width: width*0.30556121409,
+                                height: height*0.04845841662,
                                 color: Color(0xffFFFFFFDB),
                                 child: TextButton(
                                   onPressed: () {
                                     // Perform the log out action here
                                     // For example, you can call a log out function or navigate to the log out screen
                                     // ...
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Leaveconfirm()));// Close the alert dialog
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Leaveconfirm())); // Close the alert dialog
                                   },
                                   child: Text(
                                     "Yes,I am sure.",
-                                    style:
-                                      TextStyle(color: Color(0xff0C0C0C),fontSize: 10,fontWeight: FontWeight.w400),
-
+                                    style: TextStyle(
+                                        color: Color(0xff0C0C0C),
+                                        fontSize: 7.sp,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                 ),
                               ),
                               Container(
-                                width: 120,
-                                height: 40,
+                                width: width*0.30556121409,
+                                height: height*0.04845841662,
                                 color: Color(0xffFFFFFFDB),
                                 child: TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context); // Close the alert dialog
+                                    Navigator.pop(
+                                        context); // Close the alert dialog
                                   },
                                   child: Text(
                                     "No, I am not sure",
-                                    style: TextStyle(color: Color(0xff0C0C0C),fontWeight: FontWeight.w400,fontSize: 10),
+                                    style: TextStyle(
+                                        color: Color(0xff0C0C0C),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 7.sp),
                                   ),
                                 ),
                               ),
@@ -381,8 +428,6 @@ class _EnrolledeventState extends State<Enrolledevent> {
                       },
                       color: Color(0xff3854DC),
                     )
-
-
                   ],
                 ),
               ),

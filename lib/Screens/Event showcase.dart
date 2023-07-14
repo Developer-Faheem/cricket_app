@@ -1,5 +1,6 @@
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import 'Create events.dart';
 import 'Edit event.dart';
@@ -8,56 +9,61 @@ import 'Mesage event.dart';
 import 'delete confirm.dart';
 
 class Eventshowcase extends StatefulWidget {
-  const Eventshowcase({super.key});
+   Eventshowcase({super.key});
+
 
   @override
   State<Eventshowcase> createState() => _EventshowcaseState();
 }
 
 class _EventshowcaseState extends State<Eventshowcase> {
+  double height = 0;
+  double width = 0;
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff3854DC),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset(
-            "assets/arrow.png",
-            width: 10,
-          ),
-        ),
-        title: const Text(
-          "CricSpotter",
-          style: TextStyle(
-              color: Color(0xffFFFFFF),
-              fontWeight: FontWeight.w400,
-              fontSize: 24),
-        ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Image.asset(
-              "assets/noti.png",
-              width: 30,
+          appBar: AppBar(
+            backgroundColor: const Color(0xff3854DC),
+            leading: Padding(
+              padding: EdgeInsets.only(left: width * 0.05092686901),
+              child: Image.asset(
+                "assets/arrow.png",
+                width: width * 0.0254634345,
+              ),
             ),
-          )
-        ],
-      ),
+            title: Text(
+              "CricSpotter",
+              style: TextStyle(
+                  color: Color(0xffFFFFFF),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 24.sp),
+            ),
+            centerTitle: true,
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: width * 0.05092686901),
+                child: Image.asset(
+                  "assets/noti.png",
+                  width: width * 0.07639030352,
+                ),
+              )
+            ],
+          ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+                topLeft: Radius.circular(height*0.03634381246  /2 + width * 0.07639030352 /2),
+                topRight: Radius.circular(height*0.03634381246  /2 + width * 0.07639030352 /2),
               )),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                     EdgeInsets.symmetric(horizontal: width* 0.05092686901 , vertical: height*0.03634381246 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -65,49 +71,37 @@ class _EventshowcaseState extends State<Eventshowcase> {
                       "Event Created",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 24,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: height*0.01817190623 ,),
                     Align(
                         alignment: Alignment.topRight,
                         child: InkWell(
                             onTap: (){
                               Navigator.push(context,MaterialPageRoute(builder: (context)=>EditEvent()));
                             },
-                            child: Image.asset("assets/edit.png",width: 20,))),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "Match Type",
-                      style: TextStyle(
-                          color: Color(0xff000000),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                            child: Image.asset("assets/edit.png",width: width*  0.05092686901 ,))),
+                    SizedBox(height: height*0.01817190623 ,),
+                    Text("Match Type",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
+                    SizedBox(height: height*0.01817190623 ,),
                     Container(
-                      height: 50.0,
+                      height: height* 0.06057302077,
                       child: Row(
                         children: [
                           Expanded(
                             child: Text(
                               "T20",
-                              style: TextStyle(fontSize: 18.0),
+                              style:  TextStyle(fontSize: 12.sp, color: Color(0xff989696)),
                             ),
                           ),
                         ],
                       ),
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -122,27 +116,23 @@ class _EventshowcaseState extends State<Eventshowcase> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: height*0.01817190623 ,),
                     Text(
                       "Loctaion",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: height*0.01817190623 ,),
                     Container(
-                      height: 50.0,
-                      child: Text("XXXX,XXX,XX,XXXX"),
-                      padding: EdgeInsets.all(10.0),
+                      height: height* 0.06057302077,
+                      child: Text("XXXX,XXX,XX,XXXX",style:  TextStyle(fontSize: 12.sp, color: Color(0xff989696)),),
+                      padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -158,24 +148,22 @@ class _EventshowcaseState extends State<Eventshowcase> {
                       ),
                     ),
                     SizedBox(
-                      height: 25,
+                      height: height*0.03028651038 ,
                     ),
                     Text(
                       "Date",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: height*0.01817190623 ,),
                     Container(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -192,34 +180,34 @@ class _EventshowcaseState extends State<Eventshowcase> {
                       child: Text(
                         'DD / MM / YYYY',
                         style:
-                            TextStyle(fontSize: 16, color: Color(0xff989696)),
+                            TextStyle(fontSize: 12.sp, color: Color(0xff989696)),
                       ),
                     ),
                     SizedBox(
-                      height: 15,
+                      height: height*0.03028651038 ,
                     ),
                     Text(
                       "Start-Time",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
-                      height: 15,
+                      height: height*0.03028651038 ,
                     ),
                     Container(
-                      height: 50.0,
+                      height: height* 0.06057302077,
                       child: Text(
                         "XX : XX",
                         style:
-                            TextStyle(fontSize: 16, color: Color(0xff989696)),
+                            TextStyle(fontSize: 12.sp, color: Color(0xff989696)),
                       ),
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -239,7 +227,7 @@ class _EventshowcaseState extends State<Eventshowcase> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding:  EdgeInsets.only(top: height*0.03634381246 ),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -248,42 +236,30 @@ class _EventshowcaseState extends State<Eventshowcase> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901,vertical: height* 0.01211460415 ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "TEAM - 01",
-                        style: TextStyle(color: Color(0xff000000)),
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Enter team name",
-                        style: TextStyle(color: Color(0xff000000)),
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  Align(alignment: Alignment.topLeft,
+                      child: Text("TEAM - 01",style: TextStyle(color: Color(0xff000000)),)),
+                  SizedBox(height: height* 0.01211460415,),
+                  Align(alignment: Alignment.topLeft,
+                      child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
+                  SizedBox(height: height* 0.01211460415,),
                   Container(
                     width: double.infinity,
-                    height: 50.0,
+                    height: height* 0.06057302077,
                     child: Text("xyz",
                         style: TextStyle(
                             color: Color(0xff989696),
-                            fontSize: 16,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400)),
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black38,
@@ -299,47 +275,25 @@ class _EventshowcaseState extends State<Eventshowcase> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: height* 0.02422920831 ,
                   ),
                   Text(
                     "Insert team image",
                     style: TextStyle(color: Color(0xff000000)),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height*0.01211460415,
                   ),
-                  // Container(
-                  //   height: 80.0,
-                  //   width: 80,
-                  //   child: Image.asset("assets/eventshowcase1.png",fit: BoxFit.cover,),
-                  //   padding: EdgeInsets.all(10.0),
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     border: Border.all(color: Colors.grey),
-                  //     borderRadius: BorderRadius.circular(5.0),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.black38,
-                  //         blurRadius: 2.0,
-                  //         offset: Offset(0, 2), // Shadow position from bottom
-                  //       ),
-                  //       BoxShadow(
-                  //         color: Colors.black38,
-                  //         blurRadius: 2.0,
-                  //         offset: Offset(2, 0), // Shadow position from right
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+
                   Container(
-                    width: 80,
-                      height: 80,
+                    width: width*0.20370747606,
+                      height: height*0.09691683324,
                       child: Image.asset("assets/eventshowcase1.png",fit: BoxFit.cover,)),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding:  EdgeInsets.only(top: height*0.03634381246 ),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -348,42 +302,30 @@ class _EventshowcaseState extends State<Eventshowcase> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901,vertical: height* 0.01211460415 ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "TEAM - 02",
-                        style: TextStyle(color: Color(0xff000000)),
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Enter team name",
-                        style: TextStyle(color: Color(0xff000000)),
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  Align(alignment: Alignment.topLeft,
+                      child: Text("TEAM - 02",style: TextStyle(color: Color(0xff000000)),)),
+                  SizedBox(height: height* 0.01211460415,),
+                  Align(alignment: Alignment.topLeft,
+                      child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
+                  SizedBox(height: height* 0.01211460415,),
                   Container(
                     width: double.infinity,
-                    height: 50.0,
+                    height: height* 0.06057302077,
                     child: Text("ABC",
                         style: TextStyle(
                             color: Color(0xff989696),
-                            fontSize: 16,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w400)),
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black38,
@@ -399,72 +341,91 @@ class _EventshowcaseState extends State<Eventshowcase> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: height* 0.02422920831 ,
                   ),
                   Text(
                     "Insert team image",
                     style: TextStyle(color: Color(0xff000000)),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: height*0.01211460415,
                   ),
 
                   Container(
-                      width: 80,
-                      height: 80,
+                      width: width*0.20370747606,
+                      height: height*0.09691683324,
                       child: Image.asset("assets/home2.png",fit: BoxFit.cover,)),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: RoundButton(
-                title: 'DELETE EVENT',
+              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901),
+              child:  RoundButton(
+                title: "DELETE EVENT",
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
                       backgroundColor: Color(0xff3854DC),
-                      title: Center(child: Image.asset("assets/boy.png", width: 100)),
+                      title: Center(
+                          child:
+                          Image.asset("assets/boy.png", width:width*0.25463434508)),
                       content: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text("Are you sure you want to", style: TextStyle(fontSize: 16,   color: Color(0xffFFFFFFDB),)),
-                          Text(" delete the event?", style: TextStyle(fontSize: 16,   color: Color(0xffFFFFFFDB),)),
+                          Text("Are you sure you want to delete",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Color(0xffFFFFFFDB),
+                              )),
+                          Text("the event?",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Color(0xffFFFFFFDB),
+                              )),
                         ],
                       ),
                       actions: [
                         Container(
-                          width: 120,
-                          height: 40,
+                          width: width*0.30556121409,
+                          height: height*0.04845841662,
                           color: Color(0xffFFFFFFDB),
                           child: TextButton(
                             onPressed: () {
                               // Perform the log out action here
                               // For example, you can call a log out function or navigate to the log out screen
                               // ...
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> deleteconfirm()));// Close the alert dialog
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          deleteconfirm())); // Close the alert dialog
                             },
                             child: Text(
                               "Yes,I am sure.",
-                              style:
-                              TextStyle(color: Color(0xff0C0C0C),fontSize: 10,fontWeight: FontWeight.w400),
-
+                              style: TextStyle(
+                                  color: Color(0xff0C0C0C),
+                                  fontSize: 7.sp,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
                         Container(
-                          width: 120,
-                          height: 40,
+                          width: width*0.30556121409,
+                          height: height*0.04845841662,
                           color: Color(0xffFFFFFFDB),
                           child: TextButton(
                             onPressed: () {
-                              Navigator.pop(context); // Close the alert dialog
+                              Navigator.pop(
+                                  context); // Close the alert dialog
                             },
                             child: Text(
                               "No, I am not sure",
-                              style: TextStyle(color: Color(0xff0C0C0C),fontWeight: FontWeight.w400,fontSize: 10),
+                              style: TextStyle(
+                                  color: Color(0xff0C0C0C),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 7.sp),
                             ),
                           ),
                         ),
@@ -473,7 +434,7 @@ class _EventshowcaseState extends State<Eventshowcase> {
                   );
                 },
                 color: Color(0xff3854DC),
-              ),
+              )
             )
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -22,7 +23,7 @@ class _SearchState extends State<Search> {
           padding:  EdgeInsets.only(left: width*0.05092686901 ),
           child: Image.asset("assets/arrow.png",width:width* 0.0254634345,),
         ),
-        title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
+        title:  Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24.sp),),
         centerTitle: true,
         actions: [ Padding(
           padding:  EdgeInsets.only(left: width*0.05092686901 ),
@@ -34,14 +35,14 @@ class _SearchState extends State<Search> {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular((height*0.02422920831 /2)+( width*0.05092686901/2 )),
               color: Color(0xffF7F6F6)
             ),
             child: Padding(
             padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 , vertical: height*0.02422920831),
               child: Row(
                  children: [
-                   Text("Search by Date",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 20),),
+                   Text("Search by Date",style: TextStyle(color: Color(0xff000000),fontWeight: FontWeight.w400,fontSize: 20.sp),),
                    Spacer(),
                    Image.asset("assets/calendar.png",width:width*0.10185373803,)
                  ],
@@ -54,13 +55,13 @@ class _SearchState extends State<Search> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Select Date",style: TextStyle(color: Color(0xff000000),fontSize: 12,fontWeight: FontWeight.w400),),
+                Text("Select Date",style: TextStyle(color: Color(0xff000000),fontSize: 12.sp,fontWeight: FontWeight.w400),),
                 SizedBox(height: height*0.01211460415 ,),
                 Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       border: Border.all(color: Color(0xff000000)),
-                      color: Color(0xff)
+
                   ),
                   child: Row(
                     children: [

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import 'Startup.dart';
 
@@ -52,7 +53,7 @@ class Startup1State extends State<Startup1> {
                 ),
               ),
             ),
-            Center(child: Text("CricSpotter",style: TextStyle(color: Color(0xff3854DC),fontSize: 50,fontWeight: FontWeight.w400),)),
+            Center(child: Text("CricSpotter",style: TextStyle(color: Color(0xff3854DC),fontSize: 50.sp,fontWeight: FontWeight.w400),)),
 
           ],
         ),

@@ -1,5 +1,9 @@
+
+
+
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import 'Confirmation page.dart';
 import 'Informationadded.dart';
@@ -7,27 +11,32 @@ import 'Informationadded.dart';
 class Editjoinpage extends StatefulWidget {
   const Editjoinpage({Key? key});
 
+
   @override
   State<Editjoinpage> createState() => _EditjoinpageState();
 }
 
 class _EditjoinpageState extends State<Editjoinpage> {
+  double height=0;
+  double width=0;
   int _age = 12; // Initial age value
 
   @override
   Widget build(BuildContext context) {
+    height=MediaQuery.of(context).size.height;
+    width=MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff3854DC),
         leading:  Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset("assets/arrow.png",width: 10,),
+          padding:  EdgeInsets.only(left: width*0.05092686901 ),
+          child: Image.asset("assets/arrow.png",width:width* 0.0254634345,),
         ),
-        title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
+        title:  Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24.sp),),
         centerTitle: true,
         actions: [ Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Image.asset("assets/noti.png",width: 30,),
+          padding:  EdgeInsets.only(left: width*0.05092686901 ),
+          child: Image.asset("assets/noti.png",width: width*0.07639030352 ,),
         )],
       ),
       body: SingleChildScrollView(
@@ -35,7 +44,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
           children: [
             Container(
               width: double.infinity,
-              height: 250,
+              height: height* 0.28012773824,
               child: Image.asset(
                 "assets/Status5.png",
                 width: double.infinity,
@@ -45,7 +54,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(width*0.0254634345 /2 + height*0.01211460415 /2),
                 color: Colors.white,
                 boxShadow:  [
                   BoxShadow(
@@ -58,63 +67,63 @@ class _EditjoinpageState extends State<Editjoinpage> {
                 shape: BoxShape.rectangle,
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                padding:  EdgeInsets.only(left:width*0.05092686901  , top: height*0.01211460415, bottom: height*0.01211460415),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Test Match",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 24,
+                          fontSize: 24.sp,
                           fontWeight: FontWeight.w400),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "14 / 24 members",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 14,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(
-                          width: 30,
+                        SizedBox(
+                          width: width*0.07639030352 ,
                         ),
-                        const Text(
+                        Text(
                           "Date: XX-XX-XXXX",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         )
                       ],
                     ),
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           "Start-time: 11: 00am",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 14,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(
-                          width: 12,
+                        SizedBox(
+                          width: width* 0.0305561214,
                         ),
                         Image.asset(
                           "assets/loc.png",
-                          width: 15,
+                          width: width*0.03819515176,
                         ),
-                        const SizedBox(
-                          width: 2,
+                        SizedBox(
+                          width: width*0.0050926869,
                         ),
-                        const Text(
+                        Text(
                           "Location: new plaza bahria town, islamabad",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 10,
+                              fontSize: 8.sp,
                               fontWeight: FontWeight.w400),
                         )
                       ],
@@ -125,24 +134,24 @@ class _EditjoinpageState extends State<Editjoinpage> {
             ),
             Container(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                padding:  EdgeInsets.symmetric(vertical: height*0.04845841662, horizontal: width*0.05092686901 ),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Choose Your team:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Column(
                           children: [
                             Image.asset(
                               "assets/Elli G.png",
-                              width: 50,
+                              width: width*0.12731717254,
                             ),
                             const Text("Rising Stars"),
                           ],
@@ -151,30 +160,30 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           children: [
                             Image.asset(
                               "assets/ball G.png",
-                              width: 50,
+                              width: width*0.12731717254,
                             ),
                             const Text("Mighty Ducks"),
                           ],
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: height*0.02422920831 ,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Enter Your name:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Container(
-                          width: 180,
+                          width: width*0.45834182114,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                             color: Colors.white,
                             boxShadow:  [
                               BoxShadow(
@@ -188,39 +197,39 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           ),
                           child: TextField(
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 10),
+                              contentPadding:  EdgeInsets.only(left: width*0.0254634345 ),
                               hintText: "Cereal Killer",
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
-                                  fontSize: 18,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: height*0.02422920831 ,
                     ),
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           "Enter Your age:",
                           style: TextStyle(
                             color: Color(0xff000000),
                             fontWeight: FontWeight.w400,
-                            fontSize: 18,
+                            fontSize: 15.sp,
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding:  EdgeInsets.only(left: width* 0.05092686901 ),
                           child: Container(
-                            width: 92.5,
-                            height: 41,
+                            width: width*0.23553676919,
+                            height: height*0.04966987703,
 
 
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                               color: Colors.white,
                               boxShadow:  [
                                 BoxShadow(
@@ -235,11 +244,11 @@ class _EditjoinpageState extends State<Editjoinpage> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: 30,
+                                  width: width*0.07639030352 ,
                                   child: Center(child: Text("$_age")),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 20,top: 4),
+                                  padding:  EdgeInsets.only(left: width*0.05092686901,top: height*0.00484425713),
                                   child: Container(
 
 
@@ -254,8 +263,8 @@ class _EditjoinpageState extends State<Editjoinpage> {
                                               });
                                             },
 
-                                            child: Image.asset("assets/Vector 5.png",width: 20,)),
-                                        SizedBox(height: 5,),
+                                            child: Image.asset("assets/Vector 5.png",width: width*0.05092686901,)),
+                                        SizedBox(height: height*0.00605730207,),
 
                                         InkWell(
                                             onTap: () {
@@ -264,7 +273,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                                               });
                                             },
 
-                                            child: Image.asset("assets/Vector 6.png",width: 20,)),
+                                            child: Image.asset("assets/Vector 6.png",width: width* 0.05092686901 ,)),
 
 
                                       ],
@@ -279,23 +288,23 @@ class _EditjoinpageState extends State<Editjoinpage> {
                     ),
 
                     SizedBox(
-                      height: 20,
+                      height: height*0.02422920831 ,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Enter Phone-no:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Container(
-                          width: 180,
-                          height: 50,
+                          width: width*0.45834182114,
+                          height: height*0.06057302077,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                             color: Colors.white,
                             boxShadow:  [
                               BoxShadow(
@@ -309,18 +318,18 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           ),
                           child: TextField(
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 10),
+                              contentPadding:  EdgeInsets.only(left: width* 0.0254634345 ),
                               hintText: "0000-0000000",
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
-                                  fontSize: 18,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10,),
+                    SizedBox(height: height*  0.01211460415  ,),
                     RoundButton(title: "SAVE", onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> EditedConfirmation()));
                     }, color: Color(0xff3854DC),)
@@ -334,3 +343,4 @@ class _EditjoinpageState extends State<Editjoinpage> {
     );
   }
 }
+

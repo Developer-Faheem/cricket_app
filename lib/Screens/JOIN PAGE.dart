@@ -1,5 +1,6 @@
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import 'Confirmation page.dart';
 import 'Informationadded.dart';
@@ -28,7 +29,7 @@ class _JoinpageState extends State<Joinpage> {
           padding:  EdgeInsets.only(left: width*0.05092686901 ),
           child: Image.asset("assets/arrow.png",width:width* 0.0254634345,),
         ),
-        title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
+        title:  Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24.sp),),
         centerTitle: true,
         actions: [ Padding(
           padding:  EdgeInsets.only(left: width*0.05092686901 ),
@@ -50,7 +51,7 @@ class _JoinpageState extends State<Joinpage> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(width*0.0254634345 /2 + height*0.01211460415 /2),
                 color: Colors.white,
                 boxShadow:  [
                   BoxShadow(
@@ -67,42 +68,42 @@ class _JoinpageState extends State<Joinpage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                     Text(
                       "Test Match",
                       style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 24,
+                          fontSize: 24.sp,
                           fontWeight: FontWeight.w400),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text(
+                         Text(
                           "14 / 24 members",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 14,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
                          SizedBox(
                           width: width*0.07639030352 ,
                         ),
-                        const Text(
+                        Text(
                           "Date: XX-XX-XXXX",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         )
                       ],
                     ),
                     Row(
                       children: [
-                        const Text(
+                         Text(
                           "Start-time: 11: 00am",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 14,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
                          SizedBox(
@@ -119,7 +120,7 @@ class _JoinpageState extends State<Joinpage> {
                           "Location: new plaza bahria town, islamabad",
                           style: TextStyle(
                               color: Color(0xff242425),
-                              fontSize: 10,
+                              fontSize: 8.sp,
                               fontWeight: FontWeight.w400),
                         )
                       ],
@@ -136,12 +137,12 @@ class _JoinpageState extends State<Joinpage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                         Text(
                           "Choose Your team:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Column(
                           children: [
@@ -169,17 +170,17 @@ class _JoinpageState extends State<Joinpage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                         Text(
                           "Enter Your name:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Container(
                           width: width*0.45834182114,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                             color: Colors.white,
                             boxShadow:  [
                               BoxShadow(
@@ -197,7 +198,7 @@ class _JoinpageState extends State<Joinpage> {
                               hintText: "Cereal Killer",
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
-                                  fontSize: 18,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
@@ -209,12 +210,12 @@ class _JoinpageState extends State<Joinpage> {
                     ),
                     Row(
                       children: [
-                        const Text(
+                         Text(
                           "Enter Your age:",
                           style: TextStyle(
                             color: Color(0xff000000),
                             fontWeight: FontWeight.w400,
-                            fontSize: 18,
+                            fontSize: 15.sp,
                           ),
                         ),
                         Padding(
@@ -225,7 +226,7 @@ class _JoinpageState extends State<Joinpage> {
 
 
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                               color: Colors.white,
                               boxShadow:  [
                                 BoxShadow(
@@ -289,18 +290,18 @@ class _JoinpageState extends State<Joinpage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                         Text(
                           "Enter Phone-no:",
                           style: TextStyle(
                               color: Color(0xff000000),
                               fontWeight: FontWeight.w400,
-                              fontSize: 18),
+                              fontSize: 15.sp),
                         ),
                         Container(
                           width: width*0.45834182114,
                           height: height*0.06057302077,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
                             color: Colors.white,
                             boxShadow:  [
                               BoxShadow(
@@ -318,7 +319,7 @@ class _JoinpageState extends State<Joinpage> {
                               hintText: "0000-0000000",
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
-                                  fontSize: 18,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400),
                             ),
                           ),

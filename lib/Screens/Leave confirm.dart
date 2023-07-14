@@ -1,12 +1,17 @@
 import 'package:cricket_app/main.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class Leaveconfirm extends StatelessWidget {
-  const Leaveconfirm({super.key});
+   Leaveconfirm({super.key});
+  double height=0;
+  double width=0;
 
   @override
   Widget build(BuildContext context) {
+    height=MediaQuery.of(context).size.height;
+    width=MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -14,40 +19,35 @@ class Leaveconfirm extends StatelessWidget {
           height: double.infinity,
           color: Color(0xff3854DC),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+            padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 , vertical: height*0.02422920831),
             child: Column(
               children: [
                 Container(
                     alignment: Alignment.centerRight,
 
-                    child: Image.asset("assets/cross.png",width: 20,)),
-                SizedBox(height: 20,),
-                Image.asset("assets/boy.png",width: 320,),
-                SizedBox(height: 20,),
-                Text("CONGRATULATIONS",style: TextStyle(color: Color(0xffFFFFFF),fontSize: 30,fontWeight: FontWeight.w400),),
-                SizedBox(height: 10,),
+                    child: Image.asset("assets/cross.png",width:width* 0.05092686901,)),
+                SizedBox(height: height*0.02422920831,),
+                Image.asset("assets/boy.png",width: width*0.81482990425,),
+                SizedBox(height: height*0.02422920831,),
+                Text("CONGRATULATIONS",style: TextStyle(color: Color(0xffFFFFFF),fontSize: 20.sp,fontWeight: FontWeight.w400),),
+                SizedBox(height: height* 0.01211460415 ,),
+                Text("You have left the event.",style: TextStyle(color: Color(0xffFFFFFF),fontSize: 11.sp,fontWeight: FontWeight.w400),),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: Text("You have left the event.",style: TextStyle(color: Color(0xffFFFFFF),fontSize: 20,fontWeight: FontWeight.w400),),
-                ),
+                  padding: EdgeInsets.only(top: height*0.18171906233),
+                  child: Container(
+                    height: height*0.04845841662 ,
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 150),
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>btmnavigation()));
-                    },
-                    child: Container(
-                      height: 40,
+                    decoration: BoxDecoration(
+                      color: Color(0xffFFFFFFDB),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
+                    ),
+                    child: Center(
 
-                      decoration: BoxDecoration(
-                        color: Color(0xffFFFFFFDB),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-
-                        child: Text("Home",   style: TextStyle( color: Color(0xff0C0C0C),fontWeight: FontWeight.w400,fontSize: 16),),
-                      ),
+                      child: InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>btmnavigation()));
+                          },
+                          child: Text("Home",   style: TextStyle( color: Color(0xff0C0C0C),fontWeight: FontWeight.w400,fontSize: 16.sp),)),
                     ),
                   ),
                 )

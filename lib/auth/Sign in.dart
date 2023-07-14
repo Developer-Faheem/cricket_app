@@ -1,7 +1,7 @@
 import 'package:cricket_app/auth/LOGIN.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sizer/sizer.dart';
 
 import '../Utils/AuthService.dart';
 
@@ -53,8 +53,9 @@ class _SigninState extends State<Signin> {
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter an email';
-    } if (!RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+    }
+    if (!RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(value)) {
       return "Email is not valid";
     }
@@ -71,7 +72,7 @@ class _SigninState extends State<Signin> {
     if (value == null || value.isEmpty) {
       return 'Please enter a password';
     } else if (value!.length <= 7) {
-    return "password must be greater than 7";
+      return "password must be greater than 7";
     }
     // You can add more complex validation logic here
     // For example, you can require a minimum length for the password.
@@ -109,19 +110,23 @@ class _SigninState extends State<Signin> {
         backgroundColor: Color(0xffEFF0F2),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.05092686901,
+                vertical: height * 0.02422920831),
             child: Form(
               key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: Image.asset("assets/Startup.png", width: 200)),
+                  Center(
+                      child: Image.asset("assets/Startup.png",
+                          width: width * 0.50926869016)),
                   Center(
                     child: Text(
                       "CricSpotter",
                       style: TextStyle(
                         color: Color(0xff3854DC),
-                        fontSize: 36,
+                        fontSize: 25.sp,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -130,206 +135,237 @@ class _SigninState extends State<Signin> {
                     "Enter your name",
                     style: TextStyle(
                       color: Color(0xff000000),
-                      fontSize: 18,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Container(
                     height: height * 0.06057302077,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xffC8C8C8)),
                       borderRadius: BorderRadius.circular(
-                          height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          height * 0.01211460415 / 2 +
+                              width * 0.0254634345 / 2),
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.name,
                       controller: _nameController,
                       validator: validateName,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05092686901),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Text(
                     "Username",
                     style: TextStyle(
                       color: Color(0xff000000),
-                      fontSize: 18,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Container(
                     height: height * 0.06057302077,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xffC8C8C8)),
                       borderRadius: BorderRadius.circular(
-                          height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          height * 0.01211460415 / 2 +
+                              width * 0.0254634345 / 2),
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.name,
                       controller: _usernameController,
                       validator: validateUsername,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05092686901),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Text(
                     "Email",
                     style: TextStyle(
                       color: Color(0xff000000),
-                      fontSize: 18,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Container(
                     height: height * 0.06057302077,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xffC8C8C8)),
                       borderRadius: BorderRadius.circular(
-                          height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          height * 0.01211460415 / 2 +
+                              width * 0.0254634345 / 2),
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       controller: _emailController,
                       validator: validateEmail,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05092686901),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Text(
                     "Password",
                     style: TextStyle(
                       color: Color(0xff000000),
-                      fontSize: 18,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Container(
                     height: height * 0.06057302077,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xffC8C8C8)),
                       borderRadius: BorderRadius.circular(
-                          height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          height * 0.01211460415 / 2 +
+                              width * 0.0254634345 / 2),
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
                       controller: _passwordController,
                       validator: validatePassword,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05092686901),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Text(
                     "Age",
                     style: TextStyle(
                       color: Color(0xff000000),
-                      fontSize: 18,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Container(
                     height: height * 0.06057302077,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xffC8C8C8)),
                       borderRadius: BorderRadius.circular(
-                          height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          height * 0.01211460415 / 2 +
+                              width * 0.0254634345 / 2),
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
                       controller: _ageController,
                       validator: validateAge,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05092686901),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Text(
                     "Address",
                     style: TextStyle(
                       color: Color(0xff000000),
-                      fontSize: 18,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: height * 0.00605730207),
                   Container(
                     height: height * 0.06057302077,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Color(0xffC8C8C8)),
                       borderRadius: BorderRadius.circular(
-                          height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          height * 0.01211460415 / 2 +
+                              width * 0.0254634345 / 2),
                     ),
                     child: TextFormField(
+                      keyboardType: TextInputType.streetAddress,
                       controller: _addressController,
                       validator: validateAddress,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: width * 0.05092686901),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xffE4E7EB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xffE4E7EB)),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: height*0.02422920831  ),
                   RoundButton(
                     title: "Sign Up",
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
-    await FirebaseServices.signUp(
-    _emailController.text.trim(),
-    _passwordController.text.trim(),
-    _usernameController.text.trim());
-    }
-                      },  color: Color(0xff3854DC),
-
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Login()));
+                        await FirebaseServices.signUp(
+                            _emailController.text.trim(),
+                            _passwordController.text.trim(),
+                            _usernameController.text.trim());
+                      }
+                    },
+                    color: Color(0xff3854DC),
                   ),
                 ],
               ),

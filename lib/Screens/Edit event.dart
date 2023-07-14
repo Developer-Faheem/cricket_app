@@ -1,7 +1,8 @@
+import 'package:cricket_app/Screens/Edit%20message.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
-import 'Edit message.dart';
 import 'Mesage event.dart';
 
 class EditEvent extends StatefulWidget {
@@ -12,6 +13,8 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+  double height=0;
+  double width=0;
   String? selectedOption;
   DateTime? selectedDate;
   List<String> matchOptions = ['Select Match Type', 'Test Match', 'T20 Match', 'Championship'];
@@ -71,18 +74,20 @@ class _EditEventState extends State<EditEvent> {
 
   @override
   Widget build(BuildContext context) {
+    height=MediaQuery.of(context).size.height;
+    width=MediaQuery.of(context).size.width;
     return SafeArea(child:Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff3854DC),
         leading:  Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset("assets/arrow.png",width: 10,),
+          padding:  EdgeInsets.only(left: width* 0.05092686901 ),
+          child: Image.asset("assets/arrow.png",width: width* 0.0254634345 ,),
         ),
-        title: const Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24),),
+        title:  Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24.sp),),
         centerTitle: true,
         actions: [ Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Image.asset("assets/noti.png",width: 30,),
+          padding:  EdgeInsets.only(right:  width* 0.05092686901 ),
+          child: Image.asset("assets/noti.png",width: width* 0.07639030352 ,),
         )],
       ),
       body:
@@ -92,25 +97,25 @@ class _EditEventState extends State<EditEvent> {
             Container(
               decoration: BoxDecoration(
 
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),)
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular((height* 0.03634381246/2)+(width*0.07639030352 /2)),topRight: Radius.circular((height* 0.03634381246/2)+(width*0.07639030352 /2)),)
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+                padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901,vertical: height* 0.03634381246),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Event created",style: TextStyle(color: Color(0xff000000),fontSize: 24,fontWeight: FontWeight.w400),),
-                    SizedBox(height: 15,),
-                    Text("Match Type",style: TextStyle(color: Color(0xff000000),fontSize: 16,fontWeight: FontWeight.w400),),
-                    SizedBox(height: 15,),
+                    Text("Create an event",style: TextStyle(color: Color(0xff000000),fontSize: 18.sp,fontWeight: FontWeight.w400),),
+                    SizedBox(height: height*0.01817190623 ,),
+                    Text("Match Type",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
+                    SizedBox(height: height*0.01817190623 ,),
                     Container(
-                      height: 50.0,
+                      height: height* 0.06057302077,
                       child: Row(
                         children: [
                           Expanded(
                             child: Text(
                               selectedOption!,
-                              style: TextStyle(fontSize: 18.0),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
                           ),
                           IconButton(
@@ -121,11 +126,11 @@ class _EditEventState extends State<EditEvent> {
                           ),
                         ],
                       ),
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -140,25 +145,25 @@ class _EditEventState extends State<EditEvent> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 15,),
-                    Text("Loctaion",style: TextStyle(color: Color(0xff000000),fontSize: 16,fontWeight: FontWeight.w400),),
-                    SizedBox(height: 15,),
+                    SizedBox(height: height*0.01817190623 ,),
+                    Text("Loctaion",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
+                    SizedBox(height: height*0.01817190623 ,),
                     Container(
-                      height: 50.0,
+                      height: height* 0.06057302077,
                       child: TextField(
 
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 2,bottom: 10),
+                            contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom: height*0.01211460415 ),
                             hintText: "Location"
 
                         ),
 
                       ),
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -173,18 +178,18 @@ class _EditEventState extends State<EditEvent> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 15,),
-                    Text("Date",style: TextStyle(color: Color(0xff000000),fontSize: 16,fontWeight: FontWeight.w400),),
-                    SizedBox(height: 10,),
+                    SizedBox(height: height*0.01817190623 ,),
+                    Text("Date",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
+                    SizedBox(height: height* 0.01211460415 ,),
                     Row(
                       children: [
                         Container(
 
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(5.0),
+                            borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black38,
@@ -200,12 +205,12 @@ class _EditEventState extends State<EditEvent> {
                           ),
                           child:  Text(
                             selectedDate != null ? selectedDate.toString() : 'DD / MM / YYYY',
-                            style: TextStyle(fontSize: 16,color: Color(0xff989696)),
+                            style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),
                           ),
 
                         ),
                         IconButton(
-                          icon: Image.asset("assets/calendar.png",width: 40,),
+                          icon: Image.asset("assets/calendar.png",width: width*0.10185373803,),
                           onPressed: () {
                             _pickDate(context);
                           },
@@ -215,17 +220,17 @@ class _EditEventState extends State<EditEvent> {
 
 
                     ),
-                    SizedBox(height: 15,),
-                    Text("Start-Time",style: TextStyle(color: Color(0xff000000),fontSize: 16,fontWeight: FontWeight.w400),),
-                    SizedBox(height: 10,),
+                    SizedBox(height: height* 0.01817190623,),
+                    Text("Start-Time",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
+                    SizedBox(height: height* 0.01211460415 ,),
                     Container(
-                      height: 50.0,
-                      child: Text("XX : XX",style: TextStyle(fontSize: 16,color: Color(0xff989696)),),
-                      padding: EdgeInsets.all(10.0),
+                      height: height* 0.06057302077,
+                      child: Text("XX : XX",style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),),
+                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -247,7 +252,7 @@ class _EditEventState extends State<EditEvent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding:  EdgeInsets.only(top: height*0.03634381246 ),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -256,34 +261,34 @@ class _EditEventState extends State<EditEvent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901,vertical: height* 0.01211460415 ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(alignment: Alignment.topLeft,
                       child: Text("TEAM - 01",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height* 0.01211460415,),
                   Align(alignment: Alignment.topLeft,
                       child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height* 0.01211460415,),
                   Container(
-                    height: 50.0,
+                    height: height* 0.06057302077,
                     child: TextField(
 
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 2,bottom: 10),
+                          contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
                           hintText: "XYZ",
-                          hintStyle: TextStyle(color: Color(0xff989696),fontSize: 16,fontWeight: FontWeight.w400)
+                          hintStyle: TextStyle(color: Color(0xff989696),fontSize: 12.sp,fontWeight: FontWeight.w400)
 
                       ),
 
                     ),
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black38,
@@ -298,18 +303,18 @@ class _EditEventState extends State<EditEvent> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: height*0.02422920831 ,),
                   Text("Insert team image",style: TextStyle(color: Color(0xff000000)),),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height*0.01211460415,),
                   Container(
-                    height: 80.0,
-                    width: 80,
-                    child: Center(child: Text("+",style: TextStyle(fontSize: 40,color: Color(0xff989696)),)),
-                    padding: EdgeInsets.all(10.0),
+                    height: height*0.09691683324,
+                    width: width*0.20370747606,
+                    child: Center(child: Text("+",style: TextStyle(fontSize: 30.sp,color: Color(0xff989696)),)),
+                    padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black38,
@@ -328,7 +333,7 @@ class _EditEventState extends State<EditEvent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding:  EdgeInsets.only(top: height*0.03634381246 ),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -337,34 +342,34 @@ class _EditEventState extends State<EditEvent> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901,vertical: height* 0.01211460415 ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(alignment: Alignment.topLeft,
                       child: Text("TEAM - 02",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height* 0.01211460415,),
                   Align(alignment: Alignment.topLeft,
                       child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height* 0.01211460415,),
                   Container(
-                    height: 50.0,
+                    height: height* 0.06057302077,
                     child: TextField(
 
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 2,bottom: 10),
+                          contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
                           hintText: "ABC",
-                          hintStyle: TextStyle(color: Color(0xff989696),fontSize: 16,fontWeight: FontWeight.w400)
+                          hintStyle: TextStyle(color: Color(0xff989696),fontSize: 12.sp,fontWeight: FontWeight.w400)
 
                       ),
 
                     ),
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black38,
@@ -379,18 +384,17 @@ class _EditEventState extends State<EditEvent> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: height* 0.02422920831 ,),
                   Text("Insert team image",style: TextStyle(color: Color(0xff000000)),),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height*0.01211460415,),
                   Container(
-                    height: 80.0,
-                    width: 80,
-                    child: Center(child: Text("+",style: TextStyle(fontSize: 40,color: Color(0xff989696)),)),
-                    padding: EdgeInsets.all(10.0),
+                    height: height*0.09691683324,                    width: width*0.20370747606,
+                    child: Center(child: Text("+",style: TextStyle(fontSize: 30.sp,color: Color(0xff989696)),)),
+                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black38,
@@ -408,9 +412,8 @@ class _EditEventState extends State<EditEvent> {
                 ],
               ),
             ),
-            SizedBox(height: 10,),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 ),
               child: RoundButton(title: 'SAVE EVENT',onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Editmesaage()));
 
