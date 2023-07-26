@@ -357,12 +357,14 @@ class _SigninState extends State<Signin> {
                     title: "Sign Up",
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Login()));
+                       
                         await FirebaseServices.signUp(
                             _emailController.text.trim(),
                             _passwordController.text.trim(),
                             _usernameController.text.trim());
+                            
+                             Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Login()));
                       }
                     },
                     color: Color(0xff3854DC),

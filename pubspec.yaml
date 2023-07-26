@@ -40,6 +40,10 @@ dependencies:
   fluttertoast: ^8.2.2
   cloud_firestore: ^4.8.2
   sizer: ^2.0.15
+  image_picker: ^1.0.1
+ 
+
+
 
 dev_dependencies:
   flutter_test:

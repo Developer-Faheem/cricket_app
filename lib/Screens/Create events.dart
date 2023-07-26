@@ -1,7 +1,13 @@
-import 'package:cricket_app/widget/Roundbutton.dart';
-import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/widget/Roundbutton.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sizer/sizer.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 import 'Mesage event.dart';
 
 class Events extends StatefulWidget {
@@ -12,11 +18,67 @@ class Events extends StatefulWidget {
 }
 
 class _EventsState extends State<Events> {
-  double height=0;
-  double width=0;
+  double height = 0;
+  double width = 0;
   String? selectedOption;
   DateTime? selectedDate;
-  List<String> matchOptions = ['Select Match Type', 'Test Match', 'T20 Match', 'Championship'];
+  String? matchType;
+  Uint8List? _file;
+    
+  List<String> matchOptions = [
+    'Select Match Type',
+    'Test Match',
+    'T20 Match',
+    'Championship'
+  ];
+  final firestore = FirebaseFirestore.instance.collection('match');
+  final timeController = TextEditingController();
+  final team1Controller = TextEditingController();
+  final team2Controller = TextEditingController();
+
+  //code for image picker
+    File? _imageFile;
+      File? _imageFile1;
+  
+
+  Future<void> _pickImage(bool team) async {
+    final pickedFile = await  ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        if(team==true){
+             _imageFile = File(pickedFile.path);
+        }else{
+            _imageFile1 = File(pickedFile.path);
+        }     
+      });
+    }
+  }
+
+  //   uploading the image to firebase storage 
+  //   Future<void> _uploadImage() async {
+  //   if (_imageFile == null) {
+  //     print("No image selected!");
+  //     return;
+  //   }
+  //   try {
+  //     Upload image to Firebase Storage
+  //     final Reference storageReference = FirebaseStorage.instance
+  //         .ref()
+  //         .child('images')
+  //         .child(DateTime.now().toString() + '.jpg');
+  //     final UploadTask uploadTask = storageReference.putFile(_imageFile!);
+  //     final TaskSnapshot storageSnapshot = await uploadTask.whenComplete(() {});
+  //     final imageUrl = await storageSnapshot.ref.getDownloadURL();
+  //     Save image link in Firestore
+  //     await FirebaseFirestore.instance.collection('images').add({
+  //       'imageUrl': imageUrl,
+  //     });
+  //     print("Image uploaded and link saved successfully!");
+  //   } catch (e) {
+  //     print("Error uploading image: $e");
+  //   }
+  // }
+
   Future<void> _pickDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -24,14 +86,12 @@ class _EventsState extends State<Events> {
       firstDate: DateTime(2020),
       lastDate: DateTime(2025),
     );
-
     if (pickedDate != null) {
       setState(() {
         selectedDate = pickedDate;
       });
     }
   }
-
 
   @override
   void initState() {
@@ -40,7 +100,7 @@ class _EventsState extends State<Events> {
   }
 
   void _showOptions(BuildContext context) async {
-    final result = await showDialog<String>(
+    final matchType = await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -64,172 +124,256 @@ class _EventsState extends State<Events> {
       },
     );
 
-    if (result != null) {
+    if (matchType != null) {
       setState(() {
-        selectedOption = result;
+        selectedOption = matchType;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    height=MediaQuery.of(context).size.height;
-    width=MediaQuery.of(context).size.width;
-    return SafeArea(child:Scaffold(
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff3854DC),
-        leading:  Padding(
-          padding:  EdgeInsets.only(left: width* 0.05092686901 ),
-          child: Image.asset("assets/arrow.png",width: width* 0.0254634345 ,),
+        leading: Padding(
+          padding: EdgeInsets.only(left: width * 0.05092686901),
+          child: Image.asset(
+            "assets/arrow.png",
+            width: width * 0.0254634345,
+          ),
         ),
-        title:  Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24.sp),),
+        title: Text(
+          "CricSpotter",
+          style: TextStyle(
+              color: Color(0xffFFFFFF),
+              fontWeight: FontWeight.w400,
+              fontSize: 24.sp),
+        ),
         centerTitle: true,
-        actions: [ Padding(
-          padding:  EdgeInsets.only(right:  width* 0.05092686901 ),
-          child: Image.asset("assets/noti.png",width: width* 0.07639030352 ,),
-        )],
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: width * 0.05092686901),
+            child: Image.asset(
+              "assets/noti.png",
+              width: width * 0.07639030352,
+            ),
+          )
+        ],
       ),
-      body:
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
-
-                borderRadius: BorderRadius.only(topLeft: Radius.circular((height* 0.03634381246/2)+(width*0.07639030352 /2)),topRight: Radius.circular((height* 0.03634381246/2)+(width*0.07639030352 /2)),)
-              ),
+                  borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                    (height * 0.03634381246 / 2) + (width * 0.07639030352 / 2)),
+                topRight: Radius.circular(
+                    (height * 0.03634381246 / 2) + (width * 0.07639030352 / 2)),
+              )),
               child: Padding(
-                padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901,vertical: height* 0.03634381246),
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.05092686901,
+                    vertical: height * 0.03634381246),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Create an event",style: TextStyle(color: Color(0xff000000),fontSize: 18.sp,fontWeight: FontWeight.w400),),
-                    SizedBox(height: height*0.01817190623 ,),
-                    Text("Match Type",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
-                    SizedBox(height: height*0.01817190623 ,),
-                Container(
-                  height: height* 0.06057302077,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          selectedOption!,
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Image.asset("assets/Vector 6.png"),
-                        onPressed: () {
-                          _showOptions(context);
-                        },
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsets.all(height* 0.01211460415/2 + width*0.0254634345 /2),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 2.0,
-                        offset: Offset(0, 2), // Shadow position from bottom
-                      ),
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 2.0,
-                        offset: Offset(2, 0), // Shadow position from right
-                      ),
-                    ],
-                  ),
-                ),
-                    SizedBox(height: height*0.01817190623 ,),
-                    Text("Loctaion",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
-                    SizedBox(height: height*0.01817190623 ,),
+                    Text(
+                      "Create an event",
+                      style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: height * 0.01817190623,
+                    ),
+                    Text(
+                      "Match Type",
+                      style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: height * 0.01817190623,
+                    ),
                     Container(
-                      height: height* 0.06057302077,
+                      height: height * 0.06057302077,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              selectedOption!,
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Image.asset("assets/Vector 6.png"),
+                            onPressed: () {
+                              _showOptions(context);
+                            },
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.all(height * 0.01211460415 / 2 +
+                          width * 0.0254634345 / 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(0, 2), // Shadow position from bottom
+                          ),
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(2, 0), // Shadow position from right
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.01817190623,
+                    ),
+                    Text(
+                      "Location",
+                      style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: height * 0.01817190623,
+                    ),
+                    Container(
+                      height: height * 0.06057302077,
                       child: TextField(
-
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom: height*0.01211460415 ),
-                          hintText: "Location"
-
+                            contentPadding: EdgeInsets.only(
+                                left: width * 0.0050926869,
+                                bottom: height * 0.01211460415),
+                            hintText: "Location"),
+                      ),
+                      padding: EdgeInsets.all((height * 0.01211460415 / 2) +
+                          (width * 0.0254634345)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(0, 2), // Shadow position from bottom
+                          ),
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(2, 0), // Shadow position from right
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.01817190623,
+                    ),
+                    Text(
+                      "Date",
+                      style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: height * 0.01211460415,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all((height * 0.01211460415 / 2) +
+                              (width * 0.0254634345)),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(
+                                (height * 0.00605730207 / 2) +
+                                    (width * 0.01273171725 / 2)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset:
+                                    Offset(0, 2), // Shadow position from bottom
+                              ),
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset:
+                                    Offset(2, 0), // Shadow position from right
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            selectedDate != null
+                                ? selectedDate.toString()
+                                : 'DD / MM / YYYY',
+                            style: TextStyle(
+                                fontSize: 12.sp, color: Color(0xff989696)),
+                          ),
                         ),
-
-                      ),
-                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(0, 2), // Shadow position from bottom
+                        IconButton(
+                          icon: Image.asset(
+                            "assets/calendar.png",
+                            width: width * 0.10185373803,
                           ),
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(2, 0), // Shadow position from right
-                          ),
-                        ],
-                      ),
+                          onPressed: () {
+                            _pickDate(context);
+                          },
+                        ),
+                      ],
                     ),
-                    SizedBox(height: height*0.01817190623 ,),
-                    Text("Date",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
-                    SizedBox(height: height* 0.01211460415 ,),
-                Row(
-                  children: [
+                    SizedBox(
+                      height: height * 0.01817190623,
+                    ),
+                    Text(
+                      "Start-Time",
+                      style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: height * 0.01211460415,
+                    ),
                     Container(
-
-                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
+                      height: height * 0.06057302077,
+                      width: width * 0.4,
+                      child: TextField(
+                        controller: timeController,
+                        decoration:
+                            new InputDecoration.collapsed(hintText: 'XX : XX'),
+                      ),
+                      // Text("XX : XX",style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),),
+                      padding: EdgeInsets.all((height * 0.01211460415 / 2) +
+                          (width * 0.0254634345)),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(0, 2), // Shadow position from bottom
-                          ),
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(2, 0), // Shadow position from right
-                          ),
-                        ],
-                      ),
-                    child:  Text(
-                        selectedDate != null ? selectedDate.toString() : 'DD / MM / YYYY',
-                        style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),
-                      ),
-
-                    ),
-                    IconButton(
-                      icon: Image.asset("assets/calendar.png",width: width*0.10185373803,),
-                      onPressed: () {
-                        _pickDate(context);
-                      },
-                    ),
-                  ],
-
-
-
-                ),
-                    SizedBox(height: height* 0.01817190623,),
-                    Text("Start-Time",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
-                    SizedBox(height: height* 0.01211460415 ,),
-                    Container(
-                      height: height* 0.06057302077,
-                      child: Text("XX : XX",style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),),
-                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -244,14 +388,12 @@ class _EventsState extends State<Events> {
                         ],
                       ),
                     ),
-
-
                   ],
                 ),
               ),
             ),
             Padding(
-              padding:  EdgeInsets.only(top: height*0.03634381246 ),
+              padding: EdgeInsets.only(top: height * 0.03634381246),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -260,79 +402,120 @@ class _EventsState extends State<Events> {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901,vertical: height* 0.01211460415 ),
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.05092686901,
+                  vertical: height * 0.01211460415),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment: Alignment.topLeft,
-                      child: Text("TEAM - 01",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: height* 0.01211460415,),
-                  Align(alignment: Alignment.topLeft,
-                      child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: height* 0.01211460415,),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "TEAM - 01",
+                        style: TextStyle(color: Color(0xff000000)),
+                      )),
+                  SizedBox(
+                    height: height * 0.01211460415,
+                  ),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Enter team name",
+                        style: TextStyle(color: Color(0xff000000)),
+                      )),
+                  SizedBox(
+                    height: height * 0.01211460415,
+                  ),
                   Container(
-                    height: height* 0.06057302077,
+                    height: height * 0.06057302077,
                     child: TextField(
-
+                      controller: team1Controller,
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
+                          contentPadding: EdgeInsets.only(
+                            left: width * 0.0050926869,
+                            bottom: height * 0.01211460415,
+                          ),
                           hintText: "XYZ",
-                          hintStyle: TextStyle(color: Color(0xff989696),fontSize: 12.sp,fontWeight: FontWeight.w400)
-
+                          hintStyle: TextStyle(
+                              color: Color(0xff989696),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                    padding: EdgeInsets.only(
+                        left: width * 0.0050926869,
+                        bottom: height * 0.01211460415),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(
+                          (height * 0.00605730207 / 2) +
+                              (width * 0.01273171725 / 2)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 2.0,
+                          offset: Offset(0, 2), // Shadow position from bottom
+                        ),
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 2.0,
+                          offset: Offset(2, 0), // Shadow position from right
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02422920831,
+                  ),
+                  Text(
+                    "Insert team image",
+                    style: TextStyle(color: Color(0xff000000)),
+                  ),
+                  SizedBox(
+                    height: height * 0.01211460415,
+                  ),
+                 _imageFile1==null? InkWell(
+                  onTap: () => _pickImage(false),
+                   child: Container(
+                      height: height * 0.09691683324,
+                      width: width * 0.20370747606,
+                      child:  Center(
+                          child: Text(
+                        "+",
+                        style:
+                            TextStyle(fontSize: 30.sp, color: Color(0xff989696)),
+                      ),)//Text('hello') ,
+                     ,
+                      padding: EdgeInsets.all(
+                          (height * 0.01211460415 / 2) + (width * 0.0254634345)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(0, 2), // Shadow position from bottom
+                          ),
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(2, 0), // Shadow position from right
+                          ),
+                        ],
                       ),
-
                     ),
-                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(0, 2), // Shadow position from bottom
-                        ),
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(2, 0), // Shadow position from right
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: height*0.02422920831 ,),
-                  Text("Insert team image",style: TextStyle(color: Color(0xff000000)),),
-                  SizedBox(height: height*0.01211460415,),
-                  Container(
-                    height: height*0.09691683324,
-                    width: width*0.20370747606,
-                    child: Center(child: Text("+",style: TextStyle(fontSize: 30.sp,color: Color(0xff989696)),)),
-                    padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(0, 2), // Shadow position from bottom
-                        ),
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(2, 0), // Shadow position from right
-                        ),
-                      ],
-                    ),
-                  ),
+                 ): Container( height: height * 0.09691683324,
+                      width: width * 0.20370747606,child:Image.file( _imageFile1!) ,) ,
                 ],
               ),
             ),
             Padding(
-              padding:  EdgeInsets.only(top: height*0.03634381246 ),
+              padding: EdgeInsets.only(top: height * 0.03634381246),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -341,82 +524,140 @@ class _EventsState extends State<Events> {
               ),
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: width*0.05092686901,vertical: height* 0.01211460415 ),
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.05092686901,
+                  vertical: height * 0.01211460415),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment: Alignment.topLeft,
-                      child: Text("TEAM - 02",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: height* 0.01211460415,),
-                  Align(alignment: Alignment.topLeft,
-                      child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
-                  SizedBox(height: height* 0.01211460415,),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "TEAM - 02",
+                        style: TextStyle(color: Color(0xff000000)),
+                      )),
+                  SizedBox(
+                    height: height * 0.01211460415,
+                  ),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Enter team name",
+                        style: TextStyle(color: Color(0xff000000)),
+                      )),
+                  SizedBox(
+                    height: height * 0.01211460415,
+                  ),
                   Container(
-                    height: height* 0.06057302077,
+                    height: height * 0.06057302077,
                     child: TextField(
-
+                      controller: team2Controller,
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
+                          contentPadding: EdgeInsets.only(
+                            left: width * 0.0050926869,
+                            bottom: height * 0.01211460415,
+                          ),
                           hintText: "ABC",
-                          hintStyle: TextStyle(color: Color(0xff989696),fontSize: 12.sp,fontWeight: FontWeight.w400)
-
+                          hintStyle: TextStyle(
+                              color: Color(0xff989696),
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                    padding: EdgeInsets.only(
+                        left: width * 0.0050926869,
+                        bottom: height * 0.01211460415),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(
+                          (height * 0.00605730207 / 2) +
+                              (width * 0.01273171725 / 2)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 2.0,
+                          offset: Offset(0, 2), // Shadow position from bottom
+                        ),
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 2.0,
+                          offset: Offset(2, 0), // Shadow position from right
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02422920831,
+                  ),
+                  Text(
+                    "Insert team image",
+                    style: TextStyle(color: Color(0xff000000)),
+                  ),
+                  SizedBox(
+                    height: height * 0.01211460415,
+                  ),
+                  //-----------------
+                  _imageFile==null? InkWell(
+                  onTap: () => _pickImage(true),
+                   child: Container(
+                      height: height * 0.09691683324,
+                      width: width * 0.20370747606,
+                      child:  Center(
+                          child: Text(
+                        "+",
+                        style:
+                            TextStyle(fontSize: 30.sp, color: Color(0xff989696)),
+                      ),)//Text('hello') ,
+                     ,
+                      padding: EdgeInsets.all(
+                          (height * 0.01211460415 / 2) + (width * 0.0254634345)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(0, 2), // Shadow position from bottom
+                          ),
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(2, 0), // Shadow position from right
+                          ),
+                        ],
                       ),
+                    ),
+                 ): Container( height: height * 0.09691683324,
+                      width: width * 0.20370747606,child:Image.file( _imageFile!) ,) ,
 
-                    ),
-                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(0, 2), // Shadow position from bottom
-                        ),
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(2, 0), // Shadow position from right
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: height* 0.02422920831 ,),
-                  Text("Insert team image",style: TextStyle(color: Color(0xff000000)),),
-                  SizedBox(height: height*0.01211460415,),
-                  Container(
-                    height: height*0.09691683324,                    width: width*0.20370747606,
-                    child: Center(child: Text("+",style: TextStyle(fontSize: 30.sp,color: Color(0xff989696)),)),
-                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(0, 2), // Shadow position from bottom
-                        ),
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(2, 0), // Shadow position from right
-                        ),
-                      ],
-                    ),
-                  ),
+                  //-----------------
                 ],
               ),
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 ),
-              child: RoundButton(title: 'CREATE EVENT',onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Message()));
-
-              }, color: Color(0xff3854DC),),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.05092686901),
+              child: RoundButton(
+                title: 'CREATE EVENT',
+                onTap: () {
+                  firestore.doc().set({
+                    'image': 'assets/home1.png',
+                    'members': '25 / 34 members ',
+                    'title': selectedOption.toString(),
+                    'startTime': timeController.text.trim().toString(),
+                    'team1': team1Controller.text.trim().toString(),
+                    'team2': team2Controller.text.trim().toString(),
+                  }).then((value) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Message()));
+                  }).onError((error, stackTrace) {});
+                },
+                color: Color(0xff3854DC),
+              ),
             )
           ],
         ),
@@ -424,24 +665,3 @@ class _EventsState extends State<Events> {
     ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

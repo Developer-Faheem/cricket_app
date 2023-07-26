@@ -1,6 +1,7 @@
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'JOIN PAGE.dart';
 
@@ -9,6 +10,9 @@ class Home extends StatelessWidget {
   double height = 0;
 
   double width = 0;
+
+  final firestore= FirebaseFirestore.instance.collection('match').snapshots();
+
   List<Map<String, dynamic>> dataList = [
     {
       'image': 'assets/home1.png',
@@ -110,11 +114,39 @@ class Home extends StatelessWidget {
           ),
           Container(
             height: height * 0.64207402023, // Adjust the height as needed
-            child: ListView.builder(
-              itemCount: dataList.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> data = dataList[index];
 
+            //------------------------------------------------
+
+          child: StreamBuilder<QuerySnapshot>(
+            stream: firestore,
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+                 
+                 if(snapshot.connectionState== ConnectionState.waiting){
+                  return Container(
+                    child: Center(child: CircularProgressIndicator()),
+                    height: 80,
+                    width: 80,
+                    
+                  );
+
+                 }
+
+                 if(snapshot.hasError){
+                  return 
+                  Text('error encountered!');
+                 }
+
+            // return ListView.builder(
+            //   itemCount: snapshot.data!.docs.length,
+            //   itemBuilder: (context,index){
+            //     return Text(snapshot.data!.docs[index]['team1'].toString());
+            //   }
+            //   );
+
+             return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+            
                 return Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: width * 0.05092686901, vertical: 2.sp),
@@ -139,7 +171,7 @@ class Home extends StatelessWidget {
                           width: width * 0.48380525565,
                           height: height * 0.2422920831,
                           child: Image.asset(
-                            data['image'],
+                           snapshot.data!.docs[index]['image'].toString(),
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -158,7 +190,7 @@ class Home extends StatelessWidget {
                                 children: [
                                   Center(
                                     child: Text(
-                                      data['title'],
+                                     snapshot.data!.docs[index]['title'].toString(),
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
@@ -175,7 +207,7 @@ class Home extends StatelessWidget {
                                   SizedBox(height: height * 0.00363438124),
                                   Center(
                                     child: Text(
-                                      data['members'],
+                                      snapshot.data!.docs[index]['members'].toString(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 7.sp,
@@ -184,8 +216,8 @@ class Home extends StatelessWidget {
                                     ),
                                   ),
                                   Center(
-                                    child: Text(
-                                      data['startTime'],
+                                    child: Text("Start time :${ snapshot.data!.docs[index]['startTime'].toString()} "
+                                   ,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 7.sp,
@@ -203,7 +235,7 @@ class Home extends StatelessWidget {
                                             width: width * 0.07639030352,
                                           ),
                                           Text(
-                                            data['team1'],
+                                          snapshot.data!.docs[index]['team1'].toString(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 7.sp,
@@ -220,7 +252,7 @@ class Home extends StatelessWidget {
                                             width: width * 0.07639030352,
                                           ),
                                           Text(
-                                            data['team2'],
+                                           snapshot.data!.docs[index]['team2'].toString(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 7.sp,
@@ -267,7 +299,10 @@ class Home extends StatelessWidget {
                   ),
                 );
               },
-            ),
+            );
+          }
+          )
+           
           ),
         ],
       ),

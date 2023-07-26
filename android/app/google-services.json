@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "828161318146",
-    "project_id": "cricketingapp-b4870",
-    "storage_bucket": "cricketingapp-b4870.appspot.com"
+    "project_number": "933908918194",
+    "project_id": "cricket-app-aebc9",
+    "storage_bucket": "cricket-app-aebc9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:828161318146:android:4a75d76a088f40c394f61b",
+        "mobilesdk_app_id": "1:933908918194:android:9bfc2eed75dff514127eab",
         "android_client_info": {
           "package_name": "com.example.cricket_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "828161318146-12222j4mqp0n5e1nsvgfnn79kecksosh.apps.googleusercontent.com",
+          "client_id": "933908918194-juv0mfgtlfkvhmkecgm80rvsiv5lhh84.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoO_qT9rVwp6k_R6lePi0GjuM_JEBcghI"
+          "current_key": "AIzaSyDf2SYppf2JB_x6hoKIvJ48EiRTK2Ma3FI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "828161318146-12222j4mqp0n5e1nsvgfnn79kecksosh.apps.googleusercontent.com",
+              "client_id": "933908918194-juv0mfgtlfkvhmkecgm80rvsiv5lhh84.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
