@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'Mesage event.dart';
+import 'package:uuid/uuid.dart';
+
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -63,14 +65,17 @@ class _EventsState extends State<Events> {
     Future<void> _uploadData() async {
     
      try {
+
+        String uniqueImageName = Uuid().v4();
         // Upload the first image
-        firebase_storage.Reference ref1 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures' + '1234');
+        firebase_storage.Reference ref1 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures/$uniqueImageName');
         firebase_storage.UploadTask uploadTask1 = ref1.putFile(_imageFile!);
         firebase_storage.TaskSnapshot snapshot1 = await uploadTask1;
         String team1ImageUrl = await ref1.getDownloadURL();
 
         // Upload the second image
-        firebase_storage.Reference ref2 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures' + '5678');
+          String uniqueImageName1 = Uuid().v4();
+        firebase_storage.Reference ref2 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures/$uniqueImageName1');
         firebase_storage.UploadTask uploadTask2 = ref2.putFile(_imageFile1!);
         firebase_storage.TaskSnapshot snapshot2 = await uploadTask2;
         String team2ImageUrl = await ref2.getDownloadURL();

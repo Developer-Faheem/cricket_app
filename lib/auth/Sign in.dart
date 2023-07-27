@@ -361,7 +361,11 @@ class _SigninState extends State<Signin> {
                         await FirebaseServices.signUp(
                             _emailController.text.trim(),
                             _passwordController.text.trim(),
-                            _usernameController.text.trim());
+                            _usernameController.text.trim(),
+                            _addressController.text.toString(),
+                            _ageController.text.toString(),
+                            _nameController.text.toString(),       
+                            );
                             
                              Navigator.push(context,
                             MaterialPageRoute(builder: (context) => Login()));

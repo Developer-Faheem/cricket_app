@@ -1,8 +1,9 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
 import 'Profile confirm.dart';
 
 
@@ -15,8 +16,82 @@ class ProfileEdit extends StatefulWidget {
 }
 
 class _ProfileEditState extends State<ProfileEdit> {
+
   double height = 0;
   double width = 0;
+  String? name;
+  String? email;
+  String? username;
+  String? age;
+
+  final nameController=TextEditingController();
+  final usernameController=TextEditingController();
+  final emailController=TextEditingController();
+   final ageContoller=TextEditingController();
+  
+
+void editProfile(String name ,String email,String age,String username)async{
+ try {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    User? user = _auth.currentUser;
+
+    if (user == null) {
+      print('User not signed in.');
+      return;
+    }
+
+    String userId = user.uid;
+    print(userId);
+
+    // Replace 'users' with the actual collection name where you store user profiles
+    CollectionReference usersCollection = FirebaseFirestore.instance.collection("Users data");
+
+    // Assuming you have a document ID that corresponds to the user's UID
+    // Replace 'userDocumentId' with the actual ID field in your document
+    String userDocumentId = userId;
+
+    // Update the fields you want to edit in the user document
+    Map<String, dynamic> updatedData = {
+      'name': name, // Replace 'name' with the field you want to update
+      'email': email,
+      'username':username, // Replace 'email' with the field you want to update
+      "age":age// Add other fields you want to update
+    };
+
+    // Perform the update operation
+    await usersCollection.doc(userDocumentId).update(updatedData).then((value) => {
+     Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileConfirm()))
+    });
+
+    print('Profile data updated successfully.');
+  } catch (e) {
+    print('Error updating profile data: $e');
+  }
+
+}
+
+  
+  // void getcurrentUserData()async{
+  //   //reference of collection
+  //      CollectionReference usersCollection = FirebaseFirestore.instance.collection('Users data');
+  //       //get specific document
+  //       FirebaseAuth _auth = FirebaseAuth.instance;
+  //   User? user = _auth.currentUser;
+  //   print(user!.uid);
+
+  //       var documentSnapshot =
+  //       await usersCollection.doc(user!.uid).get();
+
+  //       print(documentSnapshot['name']);
+  // }
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+   // getcurrentUserData();
+
+  }
+    
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -50,6 +125,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                 )
               ],
             ),
+            
             body: Container(
               child: SingleChildScrollView(
                 child: Column(
@@ -75,7 +151,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                     SizedBox(height: height* 0.01211460415,),
                     Container(
                       child: Center(child: Image.asset("assets/boy.png",width: width*0.50926869016,)),
-
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
@@ -90,9 +165,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: TextField(
-             keyboardType: TextInputType.name,
+                              controller: nameController,
+                            keyboardType: TextInputType.name,
                               decoration: InputDecoration(
-
                                 hintText: "John Doe",
                                 hintStyle:  TextStyle(color: Color(0xff6E7781)),
                               ),
@@ -126,6 +201,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: TextField(
+                              controller: usernameController,
                               keyboardType: TextInputType.name,
                               decoration: InputDecoration(
 
@@ -162,6 +238,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: TextField(
+                              controller: emailController,
                               decoration: InputDecoration(
                                 hintText: "John_Doe@gmail.com",
                                 hintStyle:  TextStyle(color: Color(0xff6E7781)),
@@ -196,6 +273,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: TextField(
+                              controller: ageContoller,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintText: "21",
@@ -267,7 +345,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                     Padding(
                       padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 ,vertical:   height* 0.01211460415,),
                       child: RoundButton(title: "SAVE CHANGES", onTap: (){
-         Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileConfirm()));
+
+                      editProfile(nameController.text.toString(),emailController.text.toString(),ageContoller.text.toString(),usernameController.text.toString());
+                     
                       }, color: Color(0xff3854DC)),
                     )
 
