@@ -136,17 +136,16 @@ class Home extends StatelessWidget {
                   Text('error encountered!');
                  }
 
-            // return ListView.builder(
-            //   itemCount: snapshot.data!.docs.length,
-            //   itemBuilder: (context,index){
-            //     return Text(snapshot.data!.docs[index]['team1'].toString());
-            //   }
-            //   );
-
+        
              return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
             
+            String  location=snapshot.data!.docs[index]['location'].toString(); 
+            String  date= snapshot.data!.docs[index]['data'].toString();
+            String startTime= snapshot.data!.docs[index]['startTime'].toString();
+           String match= snapshot.data!.docs[index]['title'].toString();
+
                 return Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: width * 0.05092686901, vertical: 2.sp),
@@ -230,10 +229,17 @@ class Home extends StatelessWidget {
                                     children: [
                                       Column(
                                         children: [
-                                          Image.asset(
-                                            "assets/Elli G.png",
-                                            width: width * 0.07639030352,
-                                          ),
+                                         Container(
+  width: width * 0.07639030352,
+  height: width * 0.07639030352,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(width * 0.03819515176),
+    image: DecorationImage(
+      image: NetworkImage(snapshot.data!.docs[index]['team1ImageUrl'].toString()),
+      fit: BoxFit.cover,
+    ),
+  ),
+),
                                           Text(
                                           snapshot.data!.docs[index]['team1'].toString(),
                                             style: TextStyle(
@@ -247,10 +253,17 @@ class Home extends StatelessWidget {
                                       Spacer(),
                                       Column(
                                         children: [
-                                          Image.asset(
-                                            "assets/ball G.png",
-                                            width: width * 0.07639030352,
-                                          ),
+                                         Container(
+  width: width * 0.07639030352,
+  height: width * 0.07639030352,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(width * 0.03819515176),
+    image: DecorationImage(
+      image: NetworkImage(snapshot.data!.docs[index]['team2ImageUrl'].toString()),
+      fit: BoxFit.cover,
+    ),
+  ),
+),
                                           Text(
                                            snapshot.data!.docs[index]['team2'].toString(),
                                             style: TextStyle(
@@ -270,7 +283,12 @@ class Home extends StatelessWidget {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Joinpage()),
+                                              builder: (context) => Joinpage(
+                                                location:location, 
+                                                date: date,
+                                                startTime:startTime,
+                                                match: match,
+                                              )),
                                         );
                                       },
                                       child: Container(

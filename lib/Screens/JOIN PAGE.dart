@@ -6,8 +6,18 @@ import 'Confirmation page.dart';
 import 'Informationadded.dart';
 
 class Joinpage extends StatefulWidget {
-  const Joinpage({Key? key});
 
+ String match;
+  String date;
+  String startTime;
+  String location;
+
+  Joinpage({
+    required this.match,
+    required this.startTime,
+    required this.location,
+    required this.date,
+  });
 
   @override
   State<Joinpage> createState() => _JoinpageState();
@@ -69,7 +79,8 @@ class _JoinpageState extends State<Joinpage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                      Text(
-                      "Test Match",
+                    //   "Test Match",
+                      widget.match.toString(),
                       style: TextStyle(
                           color: Color(0xff000000),
                           fontSize: 24.sp,
@@ -89,7 +100,8 @@ class _JoinpageState extends State<Joinpage> {
                           width: width*0.07639030352 ,
                         ),
                         Text(
-                          "Date: XX-XX-XXXX",
+                         //  "Date: XX-XX-XXXX",
+                          "Date: ${widget.date.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 10.sp,
@@ -100,24 +112,25 @@ class _JoinpageState extends State<Joinpage> {
                     Row(
                       children: [
                          Text(
-                          "Start-time: 11: 00am",
+                         //   "Start-time: 11: 00am",
+                          "Start-time: ${widget.startTime.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w400),
                         ),
                          SizedBox(
-                          width: width* 0.0305561214,
+                          width: width* 0.0995561214,
                         ),
                          Image.asset(
                           "assets/loc.png",
                           width: width*0.03819515176,
                         ),
                          SizedBox(
-                          width: width*0.0050926869,
+                          width: width*0.0090926869,
                         ),
                         Text(
-                          "Location: new plaza bahria town, islamabad",
+                          "Location: ${widget.location.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 8.sp,

@@ -7,7 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'Mesage event.dart';
 
 class Events extends StatefulWidget {
@@ -24,7 +24,9 @@ class _EventsState extends State<Events> {
   DateTime? selectedDate;
   String? matchType;
   Uint8List? _file;
-    
+  
+  var team1ImageUrl;  
+
   List<String> matchOptions = [
     'Select Match Type',
     'Test Match',
@@ -32,9 +34,12 @@ class _EventsState extends State<Events> {
     'Championship'
   ];
   final firestore = FirebaseFirestore.instance.collection('match');
+  firebase_storage.FirebaseStorage storage= firebase_storage.FirebaseStorage.instance ;
   final timeController = TextEditingController();
   final team1Controller = TextEditingController();
   final team2Controller = TextEditingController();
+  final locationController = TextEditingController();
+
 
   //code for image picker
     File? _imageFile;
@@ -55,29 +60,48 @@ class _EventsState extends State<Events> {
   }
 
   //   uploading the image to firebase storage 
-  //   Future<void> _uploadImage() async {
-  //   if (_imageFile == null) {
-  //     print("No image selected!");
-  //     return;
-  //   }
-  //   try {
-  //     Upload image to Firebase Storage
-  //     final Reference storageReference = FirebaseStorage.instance
-  //         .ref()
-  //         .child('images')
-  //         .child(DateTime.now().toString() + '.jpg');
-  //     final UploadTask uploadTask = storageReference.putFile(_imageFile!);
-  //     final TaskSnapshot storageSnapshot = await uploadTask.whenComplete(() {});
-  //     final imageUrl = await storageSnapshot.ref.getDownloadURL();
-  //     Save image link in Firestore
-  //     await FirebaseFirestore.instance.collection('images').add({
-  //       'imageUrl': imageUrl,
-  //     });
-  //     print("Image uploaded and link saved successfully!");
-  //   } catch (e) {
-  //     print("Error uploading image: $e");
-  //   }
-  // }
+    Future<void> _uploadData() async {
+    
+     try {
+        // Upload the first image
+        firebase_storage.Reference ref1 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures' + '1234');
+        firebase_storage.UploadTask uploadTask1 = ref1.putFile(_imageFile!);
+        firebase_storage.TaskSnapshot snapshot1 = await uploadTask1;
+        String team1ImageUrl = await ref1.getDownloadURL();
+
+        // Upload the second image
+        firebase_storage.Reference ref2 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures' + '5678');
+        firebase_storage.UploadTask uploadTask2 = ref2.putFile(_imageFile1!);
+        firebase_storage.TaskSnapshot snapshot2 = await uploadTask2;
+        String team2ImageUrl = await ref2.getDownloadURL();
+
+        // print('Team 1 Image URL: $team1ImageUrl');
+        // print('Team 2 Image URL: $team2ImageUrl');
+
+        // uploading the form data to firestore
+        
+        firestore.doc().set({
+          'image': 'assets/home1.png',
+          'members': '25 / 34 members',
+          'data':selectedDate.toString(),
+          'location':locationController.text.toString(),
+          'title': selectedOption.toString(),
+          'startTime': timeController.text.trim().toString(),
+          'team1': team1Controller.text.trim().toString(),
+          'team2': team2Controller.text.trim().toString(),
+          'team1ImageUrl': team1ImageUrl.trim().toString(),
+          'team2ImageUrl': team2ImageUrl.trim().toString(),
+        }).then((value) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Message()));
+        }).catchError((error) {
+          // Handle error while setting data to Firestore
+          print("Error: $error");
+        });
+
+      } catch (e) {
+        print("Error: $e");
+      }
+  }
 
   Future<void> _pickDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -258,6 +282,7 @@ class _EventsState extends State<Events> {
                     Container(
                       height: height * 0.06057302077,
                       child: TextField(
+                        controller: locationController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(
                                 left: width * 0.0050926869,
@@ -643,18 +668,8 @@ class _EventsState extends State<Events> {
               padding: EdgeInsets.symmetric(horizontal: width * 0.05092686901),
               child: RoundButton(
                 title: 'CREATE EVENT',
-                onTap: () {
-                  firestore.doc().set({
-                    'image': 'assets/home1.png',
-                    'members': '25 / 34 members ',
-                    'title': selectedOption.toString(),
-                    'startTime': timeController.text.trim().toString(),
-                    'team1': team1Controller.text.trim().toString(),
-                    'team2': team2Controller.text.trim().toString(),
-                  }).then((value) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Message()));
-                  }).onError((error, stackTrace) {});
+                onTap: ()  {
+                _uploadData();
                 },
                 color: Color(0xff3854DC),
               ),
