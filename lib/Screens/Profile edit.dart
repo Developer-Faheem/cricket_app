@@ -43,19 +43,18 @@ void editProfile(String name ,String email,String age,String username)async{
     String userId = user.uid;
     print(userId);
 
-    // Replace 'users' with the actual collection name where you store user profiles
+   
     CollectionReference usersCollection = FirebaseFirestore.instance.collection("Users data");
 
-    // Assuming you have a document ID that corresponds to the user's UID
-    // Replace 'userDocumentId' with the actual ID field in your document
+
     String userDocumentId = userId;
 
     // Update the fields you want to edit in the user document
     Map<String, dynamic> updatedData = {
-      'name': name, // Replace 'name' with the field you want to update
+      'name': name, 
       'email': email,
-      'username':username, // Replace 'email' with the field you want to update
-      "age":age// Add other fields you want to update
+      'username':username, 
+      "age":age
     };
 
     // Perform the update operation

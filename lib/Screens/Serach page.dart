@@ -200,13 +200,7 @@ print(date);
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   var matchData = data[index].data() as Map<String, dynamic>;
-              
-                  // Example: Display the "title" field from the document
-                  // return ListTile(
-                  //   title: Text(matchData['title']),
-                  //   subtitle: Text(matchData['location']),
-                  //   // Add other UI elements to display additional fields
-                  // );
+            
                     String  location=matchData['location'].toString(); 
               String  date= matchData['data'].toString();
               String startTime= matchData['startTime'].toString();

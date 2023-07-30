@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -80,12 +81,23 @@ class _EventsState extends State<Events> {
         firebase_storage.TaskSnapshot snapshot2 = await uploadTask2;
         String team2ImageUrl = await ref2.getDownloadURL();
 
+         FirebaseAuth _auth = FirebaseAuth.instance;
+    User? user = _auth.currentUser;
+
+    if (user == null) {
+      print('User not signed in.');
+      return;
+    }
+
+    String userId = user.uid;
+
         // print('Team 1 Image URL: $team1ImageUrl');
         // print('Team 2 Image URL: $team2ImageUrl');
 
         // uploading the form data to firestore
         
         firestore.doc().set({
+          'eventCreatorId':userId.toString(),
           'image': 'assets/home1.png',
           'members': '25 / 34 members',
           'data':selectedDate.toString(),
