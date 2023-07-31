@@ -51,10 +51,10 @@ class _EventshowcaseState extends State<Eventshowcase> {
     await documentReference.delete().then((value){
      
        Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            deleteconfirm()));
+           context,
+          MaterialPageRoute(
+             builder: (context) =>
+        deleteconfirm()));
     });
 
     print('Document deleted successfully.');

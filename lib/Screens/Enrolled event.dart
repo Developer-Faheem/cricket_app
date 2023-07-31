@@ -1,14 +1,39 @@
-import 'package:cricket_app/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
 import 'Editjoinpage.dart';
 import 'Leave confirm.dart';
 
 class Enrolledevent extends StatefulWidget {
-  const Enrolledevent({Key? key});
+
+
+   final String  match;
+   final  String  location;
+   final  String  date;
+   final  String  startTime;
+   final  String  seletedTeamName;
+   final  String  name;
+   final  String  age;
+   final  String  phoneNumber;
+   final  String selectedTeamImage;
+   final  String documentUniqueId;
+   
+
+
+   Enrolledevent({
+   
+    required this.selectedTeamImage,
+    required this.match,
+    required this.location,
+    required this.date,
+    required this.startTime,
+    required this.seletedTeamName,
+    required this.name,
+    required this.age,
+    required this.phoneNumber,
+     required this.documentUniqueId
+  });
 
   @override
   State<Enrolledevent> createState() => _EnrolledeventState();
@@ -18,6 +43,29 @@ class _EnrolledeventState extends State<Enrolledevent> {
   double height = 0;
   double width = 0;
   int _age = 12; // Initial age value
+
+  void deleteDocument() async {
+  try {
+    // Get a reference to the document
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('enrollmentData')
+        .doc(widget.documentUniqueId.toString());
+
+    // Delete the document
+    await documentReference.delete().then((value){
+     
+       Navigator.push(
+          context,
+         MaterialPageRoute(
+        builder: (context) =>
+          Leaveconfirm())); 
+    });
+
+    print('Event leaved  successfully.');
+  } catch (e) {
+    print('Error leaving Evemnt : $e');
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +132,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Test Match",
+                      widget.match,
                       style: TextStyle(
                           color: Color(0xff000000),
                           fontSize: 24.sp,
@@ -104,7 +152,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           width: width*0.07639030352 ,
                         ),
                         Text(
-                          "Date: XX-XX-XXXX",
+                          "Date: ${widget.date.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 10.sp,
@@ -115,7 +163,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                     Row(
                       children: [
                         Text(
-                          "Start-time: 11: 00am",
+                          "Start-time: ${widget.startTime.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 10.sp,
@@ -132,7 +180,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           width: width*0.0050926869,
                         ),
                         Text(
-                          "Location: new plaza bahria town, islamabad",
+                          "Location: ${widget.location.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 8.sp,
@@ -157,7 +205,21 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Editjoinpage()));
+                                      builder: (context) => Editjoinpage(
+                                              match: widget.match, 
+                                              location: widget.location,
+                                              date: widget.date,
+                                              startTime: widget.startTime,
+                                              seletedTeamName: widget.seletedTeamName, 
+                                            //  team2: team2,
+                                              selectedTeamImage:widget.selectedTeamImage,
+                                              name:widget.name,
+                                              age:widget.age,
+                                              phoneNumber:widget.phoneNumber,
+                                              // image2: image2,
+                                              documentUniqueId: widget.documentUniqueId
+
+                                      )));
                             },
                             child: Image.asset(
                               "assets/edit.png",
@@ -178,11 +240,26 @@ class _EnrolledeventState extends State<Enrolledevent> {
                         ),
                         Column(
                           children: [
-                            Image.asset(
-                              "assets/ball G.png",
-                              width: width*0.12731717254,
-                            ),
-                            const Text("Mighty Ducks"),
+                            Container(
+                                                        width: width *
+                                                            0.07639030352,
+                                                        height: width *
+                                                            0.07639030352,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius: BorderRadius
+                                                              .circular(width *
+                                                                  0.03819515176),
+                                                          image:
+                                                              DecorationImage(
+                                                            image: NetworkImage(
+                                                           widget.selectedTeamImage.toString()
+                                                               ),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                             Text(widget.seletedTeamName.toString()),
                           ],
                         )
                       ],
@@ -220,7 +297,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           child: Padding(
                             padding:  EdgeInsets.only(left: width*0.0254634345 , top:height*0.00605730207 ),
                             child: Text(
-                              "Cereal Killer",
+                              widget.name.toString(),
                               style: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 13.sp,
@@ -267,7 +344,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               children: [
                                 Container(
                                   width: width*0.07639030352 ,
-                                  child: Center(child: Text("$_age")),
+                                  child: Center(child: Text(widget.age.toString())),
                                 ),
                                 Padding(
                                   padding:  EdgeInsets.only(left: width*0.05092686901,top: height*0.00484425713),
@@ -340,7 +417,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           child: Padding(
                             padding:  EdgeInsets.only(left: width*0.01273171725, top: height* 0.01211460415 ),
                             child: Text(
-                              "0000-0000000",
+                              widget.date.toString(),
                               style: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 13.sp,
@@ -389,11 +466,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                     // Perform the log out action here
                                     // For example, you can call a log out function or navigate to the log out screen
                                     // ...
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Leaveconfirm())); // Close the alert dialog
+                                    // Close the alert dialog
+                                    deleteDocument();
                                   },
                                   child: Text(
                                     "Yes,I am sure.",

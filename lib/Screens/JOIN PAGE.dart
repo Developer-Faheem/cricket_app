@@ -49,50 +49,50 @@ class _JoinpageState extends State<Joinpage> {
   final  phoneController=TextEditingController();
   
 
-  // Function to add the "participants" subcollection to a specific document
-Future<void> addParticipantsSubcollection() async {
-  try {
+//   // Function to add the "participants" subcollection to a specific document
+// Future<void> addParticipantsSubcollection() async {
+//   try {
     
-      FirebaseAuth _auth = FirebaseAuth.instance;
-    User? user = _auth.currentUser;
+//       FirebaseAuth _auth = FirebaseAuth.instance;
+//     User? user = _auth.currentUser;
 
-    if (user == null) {
-      print('User not signed in.');
-      return;
-    }
-  //   String uniqueDocumentID = Uuid().v4();
-    String userId = user.uid;
+//     if (user == null) {
+//       print('User not signed in.');
+//       return;
+//     }
+//   //   String uniqueDocumentID = Uuid().v4();
+//     String userId = user.uid;
 
 
-    // Get the reference to the specific document in the "match" collection
-    final DocumentReference matchDocumentRef =
-        FirebaseFirestore.instance.collection('match').doc(widget.uid.toString());
+//     // Get the reference to the specific document in the "match" collection
+//     final DocumentReference matchDocumentRef =
+//         FirebaseFirestore.instance.collection('match').doc(widget.uid.toString());
 
-    //  Create the "participants" subcollection
-    final CollectionReference participantsCollectionRef =
-        matchDocumentRef.collection('participants');
+//     //  Create the "participants" subcollection
+//     final CollectionReference participantsCollectionRef =
+//         matchDocumentRef.collection('participants');
 
-    // Add documents to the "participants" subcollection
-    await participantsCollectionRef.add({
-      'uid':FieldValue.serverTimestamp().toString(),
-      'name': nameController.text.toString(),
-      'age': _age.toString(),
-      'phoneNumber':phoneController.text.toString(),
-      'participantId':userId.toString()
+//     // Add documents to the "participants" subcollection
+//     await participantsCollectionRef.add({
+//       'uid':FieldValue.serverTimestamp().toString(),
+//       'name': nameController.text.toString(),
+//       'age': _age.toString(),
+//       'phoneNumber':phoneController.text.toString(),
+//       'participantId':userId.toString()
 
-    }).then((value){
+//     }).then((value){
      
-     Navigator.push(context, MaterialPageRoute(builder: (context)=> Confirmationpage()));
+//      Navigator.push(context, MaterialPageRoute(builder: (context)=> Confirmationpage()));
 
-    });
+//     });
 
-    // You can add more documents or use a loop to add multiple participants.
+//     // You can add more documents or use a loop to add multiple participants.
 
-    print('Participants subcollection added successfully.');
-  } catch (e) {
-    print('Error adding participants subcollection: $e');
-  }
-}
+//     print('Participants subcollection added successfully.');
+//   } catch (e) {
+//     print('Error adding participants subcollection: $e');
+//   }
+// }
 
   @override
   Widget build(BuildContext context) {
@@ -441,6 +441,7 @@ Future<void> addParticipantsSubcollection() async {
                     RoundButton(title: "confirm", onTap: (){
 
                       MatchData().createdMatch(
+                        context,
                         id: FirebaseAuth.instance.currentUser!.uid,
                         matchType: widget.match,
                         members: '14 / 24 members ',

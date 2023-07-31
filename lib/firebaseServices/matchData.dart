@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/Screens/Confirmation%20page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
@@ -11,7 +13,7 @@ class MatchData {
 
   Future<void> createdMatch(
 
-      
+      BuildContext context,
      {required String  id,required String matchType,
       required members,
      required  String startTime,
@@ -31,10 +33,11 @@ class MatchData {
     //   print('User not signed in.');
     //   return;
     // }
-  //   String uniqueDocumentID = Uuid().v4();
+    String uniqueDocumentID = Uuid().v4();
     
     
-    await _firebaseFirestore.collection('enrollmentData').add({
+    await _firebaseFirestore.collection('enrollmentData').doc(uniqueDocumentID).set({
+      'documentId':uniqueDocumentID,
      'id': id,
       'name': name,
       'age': age,
@@ -47,6 +50,7 @@ class MatchData {
       'teamImageUrl': temamImageUrl,
       'locaton': location
     }).then((value) {
+       Navigator.push(context, MaterialPageRoute(builder: (context)=> Confirmationpage()));
       print('enrolled sucessful');
     });
   }

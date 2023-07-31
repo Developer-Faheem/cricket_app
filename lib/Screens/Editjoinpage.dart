@@ -4,12 +4,35 @@
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
 import 'Confirmation page.dart';
 import 'Informationadded.dart';
 
 class Editjoinpage extends StatefulWidget {
-  const Editjoinpage({Key? key});
+  final String  match;
+   final  String  location;
+   final  String  date;
+   final  String  startTime;
+   final  String  seletedTeamName;
+   final  String  name;
+   final  String  age;
+   final  String  phoneNumber;
+   final  String selectedTeamImage;
+   final  String documentUniqueId;
+
+
+   Editjoinpage({
+   
+    required this.selectedTeamImage,
+    required this.match,
+    required this.location,
+    required this.date,
+    required this.startTime,
+    required this.seletedTeamName,
+    required this.name,
+    required this.age,
+    required this.phoneNumber,
+     required this.documentUniqueId
+  });
 
 
   @override
@@ -20,6 +43,8 @@ class _EditjoinpageState extends State<Editjoinpage> {
   double height=0;
   double width=0;
   int _age = 12; // Initial age value
+  final updatedName=TextEditingController();
+  final updatedPhoneNumber=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +97,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Test Match",
+                      widget.match.toString(),
                       style: TextStyle(
                           color: Color(0xff000000),
                           fontSize: 24.sp,
@@ -92,7 +117,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           width: width*0.07639030352 ,
                         ),
                         Text(
-                          "Date: XX-XX-XXXX",
+                          "Date: ${widget.date.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 10.sp,
@@ -103,7 +128,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                     Row(
                       children: [
                         Text(
-                          "Start-time: 11: 00am",
+                          "Start-time: ${widget.startTime.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 10.sp,
@@ -120,7 +145,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           width: width*0.0050926869,
                         ),
                         Text(
-                          "Location: new plaza bahria town, islamabad",
+                          "Location: ${widget.location.toString()}",
                           style: TextStyle(
                               color: Color(0xff242425),
                               fontSize: 8.sp,
@@ -196,9 +221,10 @@ class _EditjoinpageState extends State<Editjoinpage> {
                             shape: BoxShape.rectangle,
                           ),
                           child: TextField(
+                            controller: updatedName,
                             decoration: InputDecoration(
                               contentPadding:  EdgeInsets.only(left: width*0.0254634345 ),
-                              hintText: "Cereal Killer",
+                              hintText: widget.name.toString(),
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 15.sp,
@@ -245,7 +271,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                               children: [
                                 Container(
                                   width: width*0.07639030352 ,
-                                  child: Center(child: Text("$_age")),
+                                  child: Center(child: Text(widget.age.toString())),
                                 ),
                                 Padding(
                                   padding:  EdgeInsets.only(left: width*0.05092686901,top: height*0.00484425713),
@@ -317,9 +343,10 @@ class _EditjoinpageState extends State<Editjoinpage> {
                             shape: BoxShape.rectangle,
                           ),
                           child: TextField(
+                            controller: updatedPhoneNumber,
                             decoration: InputDecoration(
                               contentPadding:  EdgeInsets.only(left: width* 0.0254634345 ),
-                              hintText: "0000-0000000",
+                              hintText: widget.phoneNumber.toString(),
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 15.sp,

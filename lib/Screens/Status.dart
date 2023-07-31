@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/Screens/JOIN%20PAGE.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -202,7 +204,20 @@ class _StatusState extends State<Status> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Enrolledevent()));
+                                        builder: (context) => Enrolledevent(
+                                           match:  snapshot.data!.docs[index]['matchType'],
+                                              location: snapshot.data!.docs[index]['locaton'],
+                                              date: snapshot.data!.docs[index]['date'],
+                                              startTime: snapshot.data!.docs[index]['startTime'],
+                                              seletedTeamName:   snapshot.data!.docs[index]['teamName'],
+                                            //  team2: team2,
+                                              selectedTeamImage: snapshot.data!.docs[index]['teamImageUrl'],
+                                              name:snapshot.data!.docs[index]['name'],
+                                              age:snapshot.data!.docs[index]['age'],
+                                              phoneNumber:snapshot.data!.docs[index]['phoneNumber'],
+                                              // image2: image2,
+                                               documentUniqueId: snapshot.data!.docs[index]['documentId'],
+                                        )));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -244,11 +259,25 @@ class _StatusState extends State<Status> {
                                                 Spacer(),
                                                 Column(
                                                   children: [
-                                                    Image.asset(
-                                                      "assets/ball G.png",
-                                                      width:
-                                                          width * 0.07639030352,
-                                                    ),
+                                                  Container(
+                                                        width: width *
+                                                            0.07639030352,
+                                                        height: width *
+                                                            0.07639030352,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius: BorderRadius
+                                                              .circular(width *
+                                                                  0.03819515176),
+                                                          image:
+                                                              DecorationImage(
+                                                            image: NetworkImage(
+                                                              snapshot.data!.docs[index]['teamImageUrl'],
+                                                               ),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     Text(
                                                       snapshot.data!.docs[index]['teamName'],
                                                       style: TextStyle(
