@@ -150,6 +150,12 @@ class Home extends StatelessWidget {
               String  date= snapshot.data!.docs[index]['data'].toString();
               String startTime= snapshot.data!.docs[index]['startTime'].toString();
              String match= snapshot.data!.docs[index]['title'].toString();
+             String eventId=snapshot.data!.docs[index]['eventCreatorId'].toString();
+               String image1=snapshot.data!.docs[index]['team1ImageUrl'].toString();
+                String image2=snapshot.data!.docs[index]['team2ImageUrl'].toString();
+                String team1=snapshot.data!.docs[index]['team1'].toString();
+                String team2=snapshot.data!.docs[index]['team2'].toString();
+             String uid= snapshot.data!.docs[index]['uid'].toString();
           
                   return Padding(
                     padding: EdgeInsets.symmetric(
@@ -194,7 +200,7 @@ class Home extends StatelessWidget {
                                   children: [
                                     Center(
                                       child: Text(
-                                       snapshot.data!.docs[index]['title'].toString(),
+                                       match.toString(),
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w400,
@@ -220,7 +226,7 @@ class Home extends StatelessWidget {
                                       ),
                                     ),
                                     Center(
-                                      child: Text("Start time :${ snapshot.data!.docs[index]['startTime'].toString()} "
+                                      child: Text("Start time :${ startTime.toString()} "
                                      ,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w400,
@@ -240,13 +246,13 @@ class Home extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(width * 0.03819515176),
                                               image: DecorationImage(
-                                                image: NetworkImage(snapshot.data!.docs[index]['team1ImageUrl'].toString()),
+                                                image: NetworkImage(image1.toString()),
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
                                                                                     Text(
-                                            snapshot.data!.docs[index]['team1'].toString(),
+                                         team1.toString(),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 7.sp,
@@ -264,13 +270,13 @@ class Home extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(width * 0.03819515176),
                                                 image: DecorationImage(
-                                                  image: NetworkImage(snapshot.data!.docs[index]['team2ImageUrl'].toString()),
+                                                  image: NetworkImage(image2.toString()),
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
                                             Text(
-                                             snapshot.data!.docs[index]['team2'].toString(),
+                                            team2.toString(),
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 7.sp,
@@ -293,6 +299,12 @@ class Home extends StatelessWidget {
                                                   date: date,
                                                   startTime:startTime,
                                                   match: match,
+                                                  image1: image1,
+                                                  image2: image2,
+                                                  enrolledPersonId:eventId,
+                                                  uid:uid,
+                                                  team1: team1,
+                                                  team2: team2,
                                                 )),
                                           );
                                         },

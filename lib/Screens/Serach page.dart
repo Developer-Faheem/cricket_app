@@ -37,7 +37,8 @@ class _SearchState extends State<Search> {
         .collection('match')
         .where('data', isEqualTo: date)
         .get();
-print(date);
+
+    print(date);
     print(snapshot.docs);
 
     return snapshot.docs;
@@ -205,7 +206,17 @@ print(date);
               String  date= matchData['data'].toString();
               String startTime= matchData['startTime'].toString();
              String match= matchData['title'].toString();
+               String eventId=matchData['eventCreatorId'].toString();
+                   String image1= matchData['team1ImageUrl'].toString();
+               String image2=matchData['team2ImageUrl'].toString();
+                 String team1= matchData['team1'].toString();
+               String team2=matchData['team2'].toString();
+               
+              String uid= matchData['uid'].toString();
+
+
           
+            // String uid= snapshot.data!.docs[index]['uid'].toString();
                   return Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: width * 0.05092686901, vertical: 8.sp),
@@ -348,6 +359,13 @@ print(date);
                                                   date: date,
                                                   startTime:startTime,
                                                   match: match,
+                                                  image1: image1,
+                                                  image2: image2,
+                                                   enrolledPersonId:eventId,
+                                                  uid:uid,
+                                                  team1: team1,
+                                                  team2: team2,
+
                                                 )),
                                           );
                                         },

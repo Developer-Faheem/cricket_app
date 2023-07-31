@@ -88,7 +88,7 @@ class _EventsState extends State<Events> {
       print('User not signed in.');
       return;
     }
-
+     String uniqueDocumentID = Uuid().v4();
     String userId = user.uid;
 
         // print('Team 1 Image URL: $team1ImageUrl');
@@ -96,7 +96,7 @@ class _EventsState extends State<Events> {
 
         // uploading the form data to firestore
         
-        firestore.doc().set({
+        firestore.doc(uniqueDocumentID).set({
           'eventCreatorId':userId.toString(),
           'image': 'assets/home1.png',
           'members': '25 / 34 members',
@@ -108,6 +108,7 @@ class _EventsState extends State<Events> {
           'team2': team2Controller.text.trim().toString(),
           'team1ImageUrl': team1ImageUrl.trim().toString(),
           'team2ImageUrl': team2ImageUrl.trim().toString(),
+          'uid':uniqueDocumentID.toString()
         }).then((value) {
           Navigator.push(context, MaterialPageRoute(builder: (context) => Message()));
         }).catchError((error) {

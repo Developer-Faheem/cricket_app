@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/firebaseServices/matchData.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -7,16 +10,28 @@ import 'Informationadded.dart';
 
 class Joinpage extends StatefulWidget {
 
- String match;
+  String match;
   String date;
   String startTime;
   String location;
+  String enrolledPersonId;
+  String uid ;
+  String image1;
+  String image2;
+  String team1;
+  String team2;
 
   Joinpage({
     required this.match,
     required this.startTime,
     required this.location,
     required this.date,
+    required this.enrolledPersonId,
+    required this.uid,
+    required this.image1,
+    required this.image2,
+    required this.team1,
+    required this.team2
   });
 
   @override
@@ -27,6 +42,57 @@ class _JoinpageState extends State<Joinpage> {
   double height=0;
   double width=0;
   int _age = 12; // Initial age value
+  String?  imageUrl;
+  String?  seletedTeam;
+
+  final  nameController=TextEditingController();
+  final  phoneController=TextEditingController();
+  
+
+  // Function to add the "participants" subcollection to a specific document
+Future<void> addParticipantsSubcollection() async {
+  try {
+    
+      FirebaseAuth _auth = FirebaseAuth.instance;
+    User? user = _auth.currentUser;
+
+    if (user == null) {
+      print('User not signed in.');
+      return;
+    }
+  //   String uniqueDocumentID = Uuid().v4();
+    String userId = user.uid;
+
+
+    // Get the reference to the specific document in the "match" collection
+    final DocumentReference matchDocumentRef =
+        FirebaseFirestore.instance.collection('match').doc(widget.uid.toString());
+
+    //  Create the "participants" subcollection
+    final CollectionReference participantsCollectionRef =
+        matchDocumentRef.collection('participants');
+
+    // Add documents to the "participants" subcollection
+    await participantsCollectionRef.add({
+      'uid':FieldValue.serverTimestamp().toString(),
+      'name': nameController.text.toString(),
+      'age': _age.toString(),
+      'phoneNumber':phoneController.text.toString(),
+      'participantId':userId.toString()
+
+    }).then((value){
+     
+     Navigator.push(context, MaterialPageRoute(builder: (context)=> Confirmationpage()));
+
+    });
+
+    // You can add more documents or use a loop to add multiple participants.
+
+    print('Participants subcollection added successfully.');
+  } catch (e) {
+    print('Error adding participants subcollection: $e');
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -157,23 +223,53 @@ class _JoinpageState extends State<Joinpage> {
                               fontWeight: FontWeight.w400,
                               fontSize: 15.sp),
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              "assets/Elli G.png",
-                              width: width*0.12731717254,
-                            ),
-                            const Text("Rising Stars"),
-                          ],
+                        InkWell(
+                          onTap: (){
+                             imageUrl=widget.image1.toString();
+                             seletedTeam=widget.team1.toString();
+                          },
+                          child: Column(
+                            children: [
+                               Container(
+                                             width: width*0.12731717254,
+                                                height: width * 0.12639030352,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(100),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(widget.image1.toString()),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                              // Image.asset(
+                              //   "assets/Elli G.png",
+                              //   width: width*0.12731717254,
+                              // ),
+                               Text(widget.team1.toString()),
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              "assets/ball G.png",
-                              width: width*0.12731717254,
-                            ),
-                            const Text("Mighty Ducks"),
-                          ],
+                        InkWell(
+                          onTap: (){
+                            imageUrl=widget.image1.toString();
+                             seletedTeam=widget.team1.toString();
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                             width: width*0.12731717254,
+                                                height: width * 0.12639030352,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(100),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(widget.image2.toString()),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                               Text(widget.team2.toString()),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -206,9 +302,10 @@ class _JoinpageState extends State<Joinpage> {
                             shape: BoxShape.rectangle,
                           ),
                           child: TextField(
+                            controller: nameController,
                             decoration: InputDecoration(
                               contentPadding:  EdgeInsets.only(left: width*0.0254634345 ),
-                              hintText: "Cereal Killer",
+                              hintText: "Your Name",
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 15.sp,
@@ -327,9 +424,10 @@ class _JoinpageState extends State<Joinpage> {
                             shape: BoxShape.rectangle,
                           ),
                           child: TextField(
+                            controller: phoneController,
                             decoration: InputDecoration(
                               contentPadding:  EdgeInsets.only(left: width* 0.0254634345 ),
-                              hintText: "0000-0000000",
+                              hintText: "Your Phone Number",
                               hintStyle: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 15.sp,
@@ -341,7 +439,22 @@ class _JoinpageState extends State<Joinpage> {
                     ),
                      SizedBox(height: height*  0.01211460415  ,),
                     RoundButton(title: "confirm", onTap: (){
-Navigator.push(context, MaterialPageRoute(builder: (context)=> Confirmationpage()));
+
+                      MatchData().createdMatch(
+                        id: FirebaseAuth.instance.currentUser!.uid,
+                        matchType: widget.match,
+                        members: '14 / 24 members ',
+                        startTime:widget.startTime,
+                        date: widget.date,
+                        location: widget.location,
+                        age: _age.toString(),
+                        phoneNumber: phoneController.text.toString(),
+                        teamName:seletedTeam.toString(),
+                        temamImageUrl:imageUrl.toString(),
+                        name: nameController.text.toString()
+                      );
+                      // addParticipantsSubcollection();
+
                     }, color: Color(0xff3854DC),)
                   ],
                 ),
