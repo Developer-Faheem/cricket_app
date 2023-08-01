@@ -52,7 +52,7 @@ void editProfile(String name ,String email,String age,String username)async{
     // Update the fields you want to edit in the user document
     Map<String, dynamic> updatedData = {
       'name': name, 
-      'email': email,
+    //  'email': email,
       'username':username, 
       "age":age
     };
@@ -148,9 +148,28 @@ void editProfile(String name ,String email,String age,String username)async{
                       ),
                     ),
                     SizedBox(height: height* 0.01211460415,),
-                    Container(
-                      child: Center(child: Image.asset("assets/boy.png",width: width*0.50926869016,)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                    width: width * 0.50926869016,
+                    height: width * 0.50926869016, // Make the height equal to the width to create a perfect circle
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(width * 0.50926869016 / 2), // Half of the width makes it a circle
+                      color: Colors.transparent, // Optional, set a color if you want a background color for the container
                     ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(width * 0.50926869016 / 2), // Same as the container's decoration
+                      child: Image.asset(
+                        "assets/pp.png",
+                        width: width * 0.50926869016,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                    ],
+                  ),
+
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: width * 0.07639030352,
@@ -167,7 +186,7 @@ void editProfile(String name ,String email,String age,String username)async{
                               controller: nameController,
                             keyboardType: TextInputType.name,
                               decoration: InputDecoration(
-                                hintText: "John Doe",
+                                hintText: "Name",
                                 hintStyle:  TextStyle(color: Color(0xff6E7781)),
                               ),
                             ),
@@ -204,7 +223,7 @@ void editProfile(String name ,String email,String age,String username)async{
                               keyboardType: TextInputType.name,
                               decoration: InputDecoration(
 
-                                hintText: "John Doe",
+                                hintText: "user name ",
                                 hintStyle:  TextStyle(color: Color(0xff6E7781)),
                               ),
                             ),
@@ -233,38 +252,34 @@ void editProfile(String name ,String email,String age,String username)async{
                           SizedBox(height: height* 0.01211460415,),
                           Text("Email:",style: TextStyle(color: Color(0xff000000),fontSize: 14.sp,fontWeight: FontWeight.w400),),
                           SizedBox(height: height* 0.01211460415,),
-                          Container(
-                            width: double.infinity,
-                            height: height * 0.06057302077,
-                            child: TextField(
-                              controller: emailController,
-                              decoration: InputDecoration(
-                                hintText: "John_Doe@gmail.com",
-                                hintStyle:  TextStyle(color: Color(0xff6E7781)),
-                              ),
-                            ),
-                            padding: EdgeInsets.all(height * 0.01211460415 / 2 +
-                                width * 0.0254634345 / 2),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(
-                                  width * 0.01273171725 / 2 +
-                                      height * 0.00605730207 / 2),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black38,
-                                  blurRadius: 2.0,
-                                  offset: Offset(0, 2), // Shadow position from bottom
-                                ),
-                                BoxShadow(
-                                  color: Colors.black38,
-                                  blurRadius: 2.0,
-                                  offset: Offset(2, 0), // Shadow position from right
-                                ),
-                              ],
+                        Container(
+                          width: double.infinity,
+                          height: height * 0.06057302077,
+                          child: Center(
+                            child: Text(
+                              "emai@gmail.com",
+                              style: TextStyle(color: Color(0xff6E7781)),
                             ),
                           ),
+                          padding: EdgeInsets.all(height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          decoration: BoxDecoration(
+                            color: Colors.grey, // Set the background color to grey
+                            borderRadius: BorderRadius.circular(width * 0.01273171725 / 2 + height * 0.00605730207 / 2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset: Offset(0, 2), // Shadow position from bottom
+                              ),
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset: Offset(2, 0), // Shadow position from right
+                              ),
+                            ],
+                          ),
+                        ),
+
                           SizedBox(height: height* 0.01211460415,),
                           Text("Age:",style: TextStyle(color: Color(0xff000000),fontSize:14.sp,fontWeight: FontWeight.w400),),
                           SizedBox(height: height* 0.01211460415,),
@@ -275,7 +290,7 @@ void editProfile(String name ,String email,String age,String username)async{
                               controller: ageContoller,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
-                                hintText: "21",
+                                hintText: "your age",
                                 hintStyle:  TextStyle(color: Color(0xff6E7781)),
                               ),
                             ),

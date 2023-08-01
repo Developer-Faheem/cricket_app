@@ -134,7 +134,18 @@ class _EventshowcaseState extends State<Eventshowcase> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => EditEvent()));
+                                      builder: (context) => EditEvent(
+                                              match: widget.match,
+                                              location: widget.location,
+                                              date: widget.date,
+                                              startTime: widget.startTime,
+                                              team1: widget.team1,
+                                              team2: widget.team2,
+                                              image1: widget.image1,
+                                              image2: widget.image2,
+                                              uid: widget.uid,
+                                      
+                                      )));
                             },
                             child: Image.asset(
                               "assets/edit.png",

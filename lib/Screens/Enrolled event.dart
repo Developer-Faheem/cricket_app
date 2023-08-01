@@ -53,8 +53,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
   void deleteDocument() async {
   try {
 
-    print(widget.unseletedTeamImageUrl.toString());
-    print('11111111111111111111111111111111');
+    
     // Get a reference to the document
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('enrollmentData')

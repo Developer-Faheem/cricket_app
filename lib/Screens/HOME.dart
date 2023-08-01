@@ -1,5 +1,4 @@
-import 'package:cricket_app/widget/Eventcard.dart';
-import 'package:cricket_app/widget/Roundbutton.dart';
+
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,49 +13,6 @@ class Home extends StatelessWidget {
 
   final firestore= FirebaseFirestore.instance.collection('match').snapshots();
 
-  List<Map<String, dynamic>> dataList = [
-    {
-      'image': 'assets/home1.png',
-      'title': 'Test Match',
-      'members': '14 / 24 members',
-      'startTime': 'Start-time: 11:00am',
-      'team1': 'Rising Stars',
-      'team2': 'Mighty Ducks',
-    },
-    {
-      'image': 'assets/home2.png',
-      'title': 'Test Match',
-      'members': '14 / 24 members',
-      'startTime': 'Start-time: 11:00am',
-      'team1': 'Rising Stars',
-      'team2': 'Mighty Ducks',
-    },
-    {
-      'image': 'assets/home3.png',
-      'title': 'Test Match',
-      'members': '14 / 24 members',
-      'startTime': 'Start-time: 11:00am',
-      'team1': 'Rising Stars',
-      'team2': 'Mighty Ducks',
-    },
-    {
-      'image': 'assets/home1.png',
-      'title': 'Test Match',
-      'members': '14 / 24 members',
-      'startTime': 'Start-time: 11:00am',
-      'team1': 'Rising Stars',
-      'team2': 'Mighty Ducks',
-    },
-    {
-      'image': 'assets/home2.png',
-      'title': 'Test Match',
-      'members': '14 / 24 members',
-      'startTime': 'Start-time: 11:00am',
-      'team1': 'Rising Stars',
-      'team2': 'Mighty Ducks',
-    },
-    // Add more items as needed
-  ];
 
   @override
   Widget build(BuildContext context) {

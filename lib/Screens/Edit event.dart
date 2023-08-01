@@ -1,12 +1,39 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/Screens/Edit%20message.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:uuid/uuid.dart';
 
 import 'Mesage event.dart';
 
 class EditEvent extends StatefulWidget {
-  const EditEvent({super.key});
+  String match;
+  String location;
+  String date;
+  String startTime;
+  String team1;
+  String team2;
+  String image1;
+  String image2;
+  String uid;
+
+  EditEvent(
+      {required this.date,
+      required this.image1,
+      required this.image2,
+      required this.location,
+      required this.match,
+      required this.startTime,
+      required this.team1,
+      required this.team2
+      ,required this.uid});
 
   @override
   State<EditEvent> createState() => _EditEventState();
@@ -17,7 +44,99 @@ class _EditEventState extends State<EditEvent> {
   double width=0;
   String? selectedOption;
   DateTime? selectedDate;
+   final timeController = TextEditingController();
+  final team1Controller = TextEditingController();
+  final team2Controller = TextEditingController();
+  final locationController = TextEditingController();
   List<String> matchOptions = ['Select Match Type', 'Test Match', 'T20 Match', 'Championship'];
+
+
+   File? _imageFile;
+      File? _imageFile1;
+       final firestore = FirebaseFirestore.instance.collection('match');
+  firebase_storage.FirebaseStorage storage= firebase_storage.FirebaseStorage.instance ;
+  
+
+  Future<void> _pickImage(bool team) async {
+    final pickedFile = await  ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        if(team==true){
+             _imageFile = File(pickedFile.path);
+        }else{
+            _imageFile1 = File(pickedFile.path);
+        }     
+      });
+    }
+  }
+
+  //   uploading the image to firebase storage 
+    Future<void> _uploadData1() async {
+    
+     try {
+       
+        //     // Get the storage reference for the image
+        // firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(widget.image1);
+        // // Delete the image
+        // await ref.delete();
+        // firebase_storage.Reference ref4 = firebase_storage.FirebaseStorage.instance.ref(widget.image2);
+        // // Delete the image
+        // await ref4.delete();
+        // print('Image deleted successfully');
+
+        String uniqueImageName = Uuid().v4();
+        // Upload the first image
+        firebase_storage.Reference ref1 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures/$uniqueImageName');
+        firebase_storage.UploadTask uploadTask1 = ref1.putFile(_imageFile!);
+        firebase_storage.TaskSnapshot snapshot1 = await uploadTask1;
+        String team1ImageUrl = await ref1.getDownloadURL();
+
+        // Upload the second image
+          String uniqueImageName1 = Uuid().v4();
+        firebase_storage.Reference ref2 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures/$uniqueImageName1');
+        firebase_storage.UploadTask uploadTask2 = ref2.putFile(_imageFile1!);
+        firebase_storage.TaskSnapshot snapshot2 = await uploadTask2;
+        String team2ImageUrl = await ref2.getDownloadURL();
+
+         FirebaseAuth _auth = FirebaseAuth.instance;
+    User? user = _auth.currentUser;
+
+    if (user == null) {
+      print('User not signed in.');
+      return;
+    }
+    
+    String userId = user.uid;
+         CollectionReference usersCollection = FirebaseFirestore.instance.collection("match");
+
+    // Update the fields you want to edit in the user document
+    Map<String, dynamic> updatedData = {
+        'eventCreatorId':userId.toString(),
+          'image': 'assets/home1.png',
+          'members': '25 / 34 members',
+          'data':selectedDate.toString(),
+          'location':locationController.text.toString(),
+          'title': selectedOption.toString(),
+          'startTime': timeController.text.trim().toString(),
+          'team1': team1Controller.text.trim().toString(),
+          'team2': team2Controller.text.trim().toString(),
+          'team1ImageUrl': team1ImageUrl.trim().toString(),
+          'team2ImageUrl': team2ImageUrl.trim().toString(),
+          'uid':widget.uid.toString()
+    };
+
+          // Perform the update operation
+          await usersCollection.doc(widget.uid.toString()).update(updatedData).then((value) => {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Editmesaage()))
+          });
+      
+
+      } catch (e) {
+        print("Error: $e");
+      }
+  }
+
+
   Future<void> _pickDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -146,12 +265,12 @@ class _EditEventState extends State<EditEvent> {
                       ),
                     ),
                     SizedBox(height: height*0.01817190623 ,),
-                    Text("Loctaion",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
+                    Text("location",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height*0.01817190623 ,),
                     Container(
                       height: height* 0.06057302077,
                       child: TextField(
-
+                        controller: locationController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom: height*0.01211460415 ),
                             hintText: "Location"
@@ -224,13 +343,22 @@ class _EditEventState extends State<EditEvent> {
                     Text("Start-Time",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height* 0.01211460415 ,),
                     Container(
-                      height: height* 0.06057302077,
-                      child: Text("XX : XX",style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),),
-                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
+                      height: height * 0.06057302077,
+                      width: width * 0.4,
+                      child: TextField(
+                        controller: timeController,
+                        decoration:
+                            new InputDecoration.collapsed(hintText: 'XX : XX'),
+                      ),
+                      // Text("XX : XX",style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),),
+                      padding: EdgeInsets.all((height * 0.01211460415 / 2) +
+                          (width * 0.0254634345)),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black38,
@@ -245,7 +373,6 @@ class _EditEventState extends State<EditEvent> {
                         ],
                       ),
                     ),
-
 
                   ],
                 ),
@@ -275,7 +402,7 @@ class _EditEventState extends State<EditEvent> {
                   Container(
                     height: height* 0.06057302077,
                     child: TextField(
-
+                      controller: team1Controller,
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
                           hintText: "XYZ",
@@ -306,29 +433,42 @@ class _EditEventState extends State<EditEvent> {
                   SizedBox(height: height*0.02422920831 ,),
                   Text("Insert team image",style: TextStyle(color: Color(0xff000000)),),
                   SizedBox(height: height*0.01211460415,),
-                  Container(
-                    height: height*0.09691683324,
-                    width: width*0.20370747606,
-                    child: Center(child: Text("+",style: TextStyle(fontSize: 30.sp,color: Color(0xff989696)),)),
-                    padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(0, 2), // Shadow position from bottom
-                        ),
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(2, 0), // Shadow position from right
-                        ),
-                      ],
+                   _imageFile1==null? InkWell(
+                  onTap: () => _pickImage(false),
+                   child: Container(
+                      height: height * 0.09691683324,
+                      width: width * 0.20370747606,
+                      child:  Center(
+                          child: Text(
+                        "+",
+                        style:
+                            TextStyle(fontSize: 30.sp, color: Color(0xff989696)),
+                      ),)//Text('hello') ,
+                     ,
+                      padding: EdgeInsets.all(
+                          (height * 0.01211460415 / 2) + (width * 0.0254634345)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(0, 2), // Shadow position from bottom
+                          ),
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(2, 0), // Shadow position from right
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                 ): Container( height: height * 0.09691683324,
+                      width: width * 0.20370747606,child:Image.file( _imageFile1!) ,) ,
                 ],
               ),
             ),
@@ -356,7 +496,7 @@ class _EditEventState extends State<EditEvent> {
                   Container(
                     height: height* 0.06057302077,
                     child: TextField(
-
+                      controller: team2Controller,
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
                           hintText: "ABC",
@@ -387,35 +527,49 @@ class _EditEventState extends State<EditEvent> {
                   SizedBox(height: height* 0.02422920831 ,),
                   Text("Insert team image",style: TextStyle(color: Color(0xff000000)),),
                   SizedBox(height: height*0.01211460415,),
-                  Container(
-                    height: height*0.09691683324,                    width: width*0.20370747606,
-                    child: Center(child: Text("+",style: TextStyle(fontSize: 30.sp,color: Color(0xff989696)),)),
-                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(0, 2), // Shadow position from bottom
-                        ),
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2.0,
-                          offset: Offset(2, 0), // Shadow position from right
-                        ),
-                      ],
+                _imageFile==null? InkWell(
+                  onTap: () => _pickImage(true),
+                   child: Container(
+                      height: height * 0.09691683324,
+                      width: width * 0.20370747606,
+                      child:  Center(
+                          child: Text(
+                        "+",
+                        style:
+                            TextStyle(fontSize: 30.sp, color: Color(0xff989696)),
+                      ),)//Text('hello') ,
+                     ,
+                      padding: EdgeInsets.all(
+                          (height * 0.01211460415 / 2) + (width * 0.0254634345)),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                            (height * 0.00605730207 / 2) +
+                                (width * 0.01273171725 / 2)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(0, 2), // Shadow position from bottom
+                          ),
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2.0,
+                            offset: Offset(2, 0), // Shadow position from right
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                 ): Container( height: height * 0.09691683324,
+                      width: width * 0.20370747606,child:Image.file( _imageFile!) ,)
                 ],
               ),
             ),
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 ),
               child: RoundButton(title: 'SAVE EVENT',onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Editmesaage()));
+              _uploadData1();
 
               }, color: Color(0xff3854DC),),
             )

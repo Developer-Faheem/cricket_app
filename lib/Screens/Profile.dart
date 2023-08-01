@@ -91,13 +91,27 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: height * 0.01211460415,
                     ),
-                    Container(
-                      child: Center(
-                          child: Image.asset(
-                        "assets/boy.png",
-                        width: width * 0.50926869016,
-                      )),
+                    Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                    width: width * 0.50926869016,
+                    height: width * 0.50926869016, // Make the height equal to the width to create a perfect circle
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(width * 0.50926869016 / 2), // Half of the width makes it a circle
+                      color: Colors.transparent, // Optional, set a color if you want a background color for the container
                     ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(width * 0.50926869016 / 2), // Same as the container's decoration
+                      child: Image.asset(
+                        "assets/pp.png",
+                        width: width * 0.50926869016,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                    ],
+                  ),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: width * 0.07639030352,
@@ -119,7 +133,7 @@ class _ProfileState extends State<Profile> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: Text(
-                              "John Doe",
+                              "your name",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
@@ -163,7 +177,7 @@ class _ProfileState extends State<Profile> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: Text(
-                              "John Doe",
+                              "Username",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
@@ -203,37 +217,34 @@ class _ProfileState extends State<Profile> {
                           SizedBox(
                             height: height * 0.01211460415,
                           ),
-                          Container(
-                            width: double.infinity,
-                            height: height * 0.06057302077,
+                         Container(
+                          width: double.infinity,
+                          height: height * 0.06057302077,
+                          child: Center(
                             child: Text(
-                              "John_Doe@gmail.com",
+                              "emai@gmail.com",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
-                            padding: EdgeInsets.all(height * 0.01211460415 / 2 +
-                                width * 0.0254634345 / 2),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(
-                                  width * 0.01273171725 / 2 +
-                                      height * 0.00605730207 / 2),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black38,
-                                  blurRadius: 2.0,
-                                  offset: Offset(
-                                      0, 2), // Shadow position from bottom
-                                ),
-                                BoxShadow(
-                                  color: Colors.black38,
-                                  blurRadius: 2.0,
-                                  offset: Offset(
-                                      2, 0), // Shadow position from right
-                                ),
-                              ],
-                            ),
                           ),
+                          padding: EdgeInsets.all(height * 0.01211460415 / 2 + width * 0.0254634345 / 2),
+                          decoration: BoxDecoration(
+                            color: Colors.grey, // Set the background color to grey
+                            borderRadius: BorderRadius.circular(width * 0.01273171725 / 2 + height * 0.00605730207 / 2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset: Offset(0, 2), // Shadow position from bottom
+                              ),
+                              BoxShadow(
+                                color: Colors.black38,
+                                blurRadius: 2.0,
+                                offset: Offset(2, 0), // Shadow position from right
+                              ),
+                            ],
+                          ),
+                        ),
+
                           SizedBox(
                             height: height * 0.01211460415,
                           ),
@@ -251,7 +262,7 @@ class _ProfileState extends State<Profile> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: Text(
-                              "21",
+                              "your age",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
