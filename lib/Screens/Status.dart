@@ -215,6 +215,9 @@ class _StatusState extends State<Status> {
                                               name:snapshot.data!.docs[index]['name'],
                                               age:snapshot.data!.docs[index]['age'],
                                               phoneNumber:snapshot.data!.docs[index]['phoneNumber'],
+                                              unselectedTeamName:snapshot.data!.docs[index]['unselectedTeamName'],
+                                              unseletedTeamImageUrl:snapshot.data!.docs[index]['unseletedTeamImageUrl'],
+                                            
                                               // image2: image2,
                                                documentUniqueId: snapshot.data!.docs[index]['documentId'],
                                         )));

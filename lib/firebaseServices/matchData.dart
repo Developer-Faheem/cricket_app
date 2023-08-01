@@ -12,7 +12,6 @@ class MatchData {
    
 
   Future<void> createdMatch(
-
       BuildContext context,
      {required String  id,required String matchType,
       required members,
@@ -23,7 +22,9 @@ class MatchData {
      required  String location,
      required  String name,
       required String age,
-      required String phoneNumber}) async {
+      required String phoneNumber,
+      required String unseletedTeamImageUrl,
+       required String unselectedTeamName}) async {
 
 
     //      FirebaseAuth _auth = FirebaseAuth.instance;
@@ -38,7 +39,7 @@ class MatchData {
     
     await _firebaseFirestore.collection('enrollmentData').doc(uniqueDocumentID).set({
       'documentId':uniqueDocumentID,
-     'id': id,
+      'id': id,
       'name': name,
       'age': age,
       'phoneNumber':phoneNumber,
@@ -48,7 +49,9 @@ class MatchData {
       'date': date,
       'teamName': teamName,
       'teamImageUrl': temamImageUrl,
-      'locaton': location
+      'locaton': location,
+      'unseletedTeamImageUrl':unseletedTeamImageUrl,
+      'unselectedTeamName':unselectedTeamName
     }).then((value) {
        Navigator.push(context, MaterialPageRoute(builder: (context)=> Confirmationpage()));
       print('enrolled sucessful');

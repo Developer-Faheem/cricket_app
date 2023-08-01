@@ -18,11 +18,14 @@ class Enrolledevent extends StatefulWidget {
    final  String  phoneNumber;
    final  String selectedTeamImage;
    final  String documentUniqueId;
+   final  String unselectedTeamName;
+   final  String unseletedTeamImageUrl;
    
 
 
    Enrolledevent({
-   
+    required this.unseletedTeamImageUrl,
+    required this.unselectedTeamName,
     required this.selectedTeamImage,
     required this.match,
     required this.location,
@@ -44,8 +47,14 @@ class _EnrolledeventState extends State<Enrolledevent> {
   double width = 0;
   int _age = 12; // Initial age value
 
+ 
+
+  
   void deleteDocument() async {
   try {
+
+    print(widget.unseletedTeamImageUrl.toString());
+    print('11111111111111111111111111111111');
     // Get a reference to the document
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('enrollmentData')
@@ -206,6 +215,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Editjoinpage(
+                                              unseletedTeamImageUrl:widget.unseletedTeamImageUrl,
+                                              unselectedTeamName:widget.unselectedTeamName,
                                               match: widget.match, 
                                               location: widget.location,
                                               date: widget.date,

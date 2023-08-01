@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/firebaseServices/matchData.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Confirmation page.dart';
-import 'Informationadded.dart';
+// import 'Confirmation page.dart';
+// import 'Informationadded.dart';
 
 class Joinpage extends StatefulWidget {
 
@@ -44,6 +44,8 @@ class _JoinpageState extends State<Joinpage> {
   int _age = 12; // Initial age value
   String?  imageUrl;
   String?  seletedTeam;
+  String? unseletedTeamImageUrl;
+  String? unselectedTeamName;
 
   final  nameController=TextEditingController();
   final  phoneController=TextEditingController();
@@ -227,6 +229,8 @@ class _JoinpageState extends State<Joinpage> {
                           onTap: (){
                              imageUrl=widget.image1.toString();
                              seletedTeam=widget.team1.toString();
+                            unseletedTeamImageUrl=widget.image2.toString();
+                             unselectedTeamName=widget.team2.toString();
                           },
                           child: Column(
                             children: [
@@ -251,8 +255,10 @@ class _JoinpageState extends State<Joinpage> {
                         ),
                         InkWell(
                           onTap: (){
-                            imageUrl=widget.image1.toString();
-                             seletedTeam=widget.team1.toString();
+                            imageUrl=widget.image2.toString();
+                             seletedTeam=widget.team2.toString();
+                                unseletedTeamImageUrl=widget.image1.toString();
+                             unselectedTeamName=widget.team1.toString();
                           },
                           child: Column(
                             children: [
@@ -452,7 +458,9 @@ class _JoinpageState extends State<Joinpage> {
                         phoneNumber: phoneController.text.toString(),
                         teamName:seletedTeam.toString(),
                         temamImageUrl:imageUrl.toString(),
-                        name: nameController.text.toString()
+                        name: nameController.text.toString(),
+                        unselectedTeamName: unselectedTeamName.toString(),
+                        unseletedTeamImageUrl:unseletedTeamImageUrl.toString()
                       );
                       // addParticipantsSubcollection();
 
