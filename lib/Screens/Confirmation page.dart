@@ -1,5 +1,4 @@
 import 'package:cricket_app/main.dart';
-import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -25,7 +24,11 @@ class Confirmationpage extends StatelessWidget {
                  Container(
                    alignment: Alignment.centerRight,
 
-                     child: Image.asset("assets/cross.png",width:width* 0.05092686901,)),
+                     child: GestureDetector(
+                      onTap: (){
+                           Navigator.of(context).pop(); 
+                      },
+                      child: Image.asset("assets/cross.png",width:width* 0.05092686901,))),
                  SizedBox(height: height*0.02422920831,),
                  Image.asset("assets/boy.png",width: width*0.81482990425,),
                  SizedBox(height: height*0.02422920831,),

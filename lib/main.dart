@@ -1,10 +1,10 @@
-
 import 'package:cricket_app/Screens/Profile.dart';
 import 'package:cricket_app/Screens/Status.dart';
+import 'package:cricket_app/notification/notification_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
 import 'Screens/Create events.dart';
 import 'Screens/HOME.dart';
 import 'Screens/Serach page.dart';
@@ -16,13 +16,29 @@ import 'Screens/Startup1.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  NotificationService().initilize();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+   
+  User? user;
   // This widget is the root of your application.
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    user=FirebaseAuth.instance.currentUser;
+  }
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: ( context,  orientation,  deviceType) {
@@ -48,9 +64,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:   
-        //Events(),
-         Startup1(),
+        home:  user !=null? 
+                  btmnavigation():
+                Startup1(),
       );
     },
 

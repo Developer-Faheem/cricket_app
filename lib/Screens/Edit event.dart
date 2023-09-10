@@ -1,17 +1,11 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cricket_app/Screens/Edit%20message.dart';
-import 'package:cricket_app/widget/Roundbutton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cricket_app/notification/notification_service.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
-import 'package:uuid/uuid.dart';
-
-import 'Mesage event.dart';
 
 class EditEvent extends StatefulWidget {
   String match;
@@ -40,6 +34,7 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+   bool isLoading=false;
   double height=0;
   double width=0;
   String? selectedOption;
@@ -70,70 +65,72 @@ class _EditEventState extends State<EditEvent> {
     }
   }
 
+
   //   uploading the image to firebase storage 
     Future<void> _uploadData1() async {
-    
+        setState(() {
+                   
+                   isLoading=true;
+                 });
+
+     String? team1ImageUrl ;
+     String? team2ImageUrl;
+
      try {
-       
-        //     // Get the storage reference for the image
-        // firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(widget.image1);
-        // // Delete the image
-        // await ref.delete();
-        // firebase_storage.Reference ref4 = firebase_storage.FirebaseStorage.instance.ref(widget.image2);
-        // // Delete the image
-        // await ref4.delete();
-        // print('Image deleted successfully');
 
-        String uniqueImageName = Uuid().v4();
-        // Upload the first image
-        firebase_storage.Reference ref1 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures/$uniqueImageName');
-        firebase_storage.UploadTask uploadTask1 = ref1.putFile(_imageFile!);
+          if(_imageFile1!=null){
+
+        firebase_storage.Reference ref1 = firebase_storage.FirebaseStorage.instance.refFromURL(widget.image1);
+        firebase_storage.UploadTask uploadTask1 = ref1.putFile(_imageFile1!);
         firebase_storage.TaskSnapshot snapshot1 = await uploadTask1;
-        String team1ImageUrl = await ref1.getDownloadURL();
-
-        // Upload the second image
-          String uniqueImageName1 = Uuid().v4();
-        firebase_storage.Reference ref2 = firebase_storage.FirebaseStorage.instance.ref('/teamPictures/$uniqueImageName1');
-        firebase_storage.UploadTask uploadTask2 = ref2.putFile(_imageFile1!);
-        firebase_storage.TaskSnapshot snapshot2 = await uploadTask2;
-        String team2ImageUrl = await ref2.getDownloadURL();
-
-         FirebaseAuth _auth = FirebaseAuth.instance;
-    User? user = _auth.currentUser;
-
-    if (user == null) {
-      print('User not signed in.');
-      return;
-    }
-    
-    String userId = user.uid;
+         team1ImageUrl = await ref1.getDownloadURL();
+          }
+          if(_imageFile!=null){
+    // Upload the second image
+     //   String uniqueImageName1 = Uuid().v4();
+        firebase_storage.Reference ref2 = firebase_storage.FirebaseStorage.instance.refFromURL(widget.image2);
+        firebase_storage.UploadTask uploadTask2 = ref2.putFile(_imageFile!);
+         firebase_storage.TaskSnapshot snapshot2 = await uploadTask2;
+         team2ImageUrl = await ref2.getDownloadURL();
+          }
+    // String userId = user.uid;
          CollectionReference usersCollection = FirebaseFirestore.instance.collection("match");
 
     // Update the fields you want to edit in the user document
     Map<String, dynamic> updatedData = {
-        'eventCreatorId':userId.toString(),
-          'image': 'assets/home1.png',
-          'members': '25 / 34 members',
-          'data':selectedDate.toString(),
-          'location':locationController.text.toString(),
-          'title': selectedOption.toString(),
-          'startTime': timeController.text.trim().toString(),
-          'team1': team1Controller.text.trim().toString(),
-          'team2': team2Controller.text.trim().toString(),
-          'team1ImageUrl': team1ImageUrl.trim().toString(),
-          'team2ImageUrl': team2ImageUrl.trim().toString(),
-          'uid':widget.uid.toString()
+          
+          'data':selectedDate==null||selectedDate.toString()=="null"?widget.date.toString():selectedDate.toString(),
+          'location':locationController.text==""?widget.location.toString():locationController.text.toLowerCase(),
+          'title':selectedOption==matchOptions[0]?widget.match.toString(): selectedOption.toString(),
+          'startTime': timeController.text.trim().toString()==""?widget.startTime.toString():timeController.text.trim().toString(),
+          'team1': team1Controller.text.trim().toString()==""?widget.team1.toString(): team1Controller.text.trim().toString(),
+          'team2': team2Controller.text.trim().toString()==""?widget.team2.toString(): team2Controller.text.trim().toString(),
+          'team1ImageUrl': team1ImageUrl==null? widget.image1.toString(): team1ImageUrl.toString(),
+          'team2ImageUrl': team2ImageUrl==null? widget.image2.toString(): team2ImageUrl.toString(),
+       
     };
 
           // Perform the update operation
           await usersCollection.doc(widget.uid.toString()).update(updatedData).then((value) => {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Editmesaage()))
           });
+           
       
-
+                    NotificationService().showNotification(
+          title: 'Event edited successfully', body: 'Succesfully edited');
+         
+          
+                setState(() {
+                  isLoading=false;
+                });
       } catch (e) {
         print("Error: $e");
+        
+                setState(() {
+                  isLoading=false;
+                });
       }
+
   }
 
 
@@ -151,12 +148,13 @@ class _EditEventState extends State<EditEvent> {
       });
     }
   }
-
+ 
+ 
 
   @override
   void initState() {
     super.initState();
-    selectedOption = matchOptions[0]; // Set initial value
+    selectedOption = matchOptions[0];  // Set initial value
   }
 
   void _showOptions(BuildContext context) async {
@@ -164,7 +162,7 @@ class _EditEventState extends State<EditEvent> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Match Type'),
+          title: Text("Select Match Type"),
           content: DropdownButton<String>(
             value: selectedOption,
             items: matchOptions.map((String option) {
@@ -193,6 +191,9 @@ class _EditEventState extends State<EditEvent> {
 
   @override
   Widget build(BuildContext context) {
+    
+    
+
     height=MediaQuery.of(context).size.height;
     width=MediaQuery.of(context).size.width;
     return SafeArea(child:Scaffold(
@@ -200,14 +201,16 @@ class _EditEventState extends State<EditEvent> {
         backgroundColor: const Color(0xff3854DC),
         leading:  Padding(
           padding:  EdgeInsets.only(left: width* 0.05092686901 ),
-          child: Image.asset("assets/arrow.png",width: width* 0.0254634345 ,),
+          child: GestureDetector(onTap: (){
+            Navigator.pop(context);
+          }, child: Image.asset("assets/arrow.png",width: width* 0.0254634345 ,)),
         ),
         title:  Text("CricSpotter",style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.w400,fontSize: 24.sp),),
         centerTitle: true,
-        actions: [ Padding(
-          padding:  EdgeInsets.only(right:  width* 0.05092686901 ),
-          child: Image.asset("assets/noti.png",width: width* 0.07639030352 ,),
-        )],
+        // actions: [ Padding(
+        //   padding:  EdgeInsets.only(right:  width* 0.05092686901 ),
+        //   child: Image.asset("assets/noti.png",width: width* 0.07639030352 ,),
+        // )],
       ),
       body:
       SingleChildScrollView(
@@ -223,7 +226,7 @@ class _EditEventState extends State<EditEvent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Create an event",style: TextStyle(color: Color(0xff000000),fontSize: 18.sp,fontWeight: FontWeight.w400),),
+                    Text("Edit event details",style: TextStyle(color: Color(0xff000000),fontSize: 18.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height*0.01817190623 ,),
                     Text("Match Type",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height*0.01817190623 ,),
@@ -268,35 +271,45 @@ class _EditEventState extends State<EditEvent> {
                     Text("location",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height*0.01817190623 ,),
                     Container(
-                      height: height* 0.06057302077,
-                      child: TextField(
-                        controller: locationController,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom: height*0.01211460415 ),
-                            hintText: "Location"
-
-                        ),
-
+                height: height * 0.06057302077,
+              
+                child: TextField(
+                 
+                  controller: locationController,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                          left: width * 0.023926869,
+                        bottom: height * 0.01211460415,
                       ),
-                      padding: EdgeInsets.all((height*0.01211460415 /2)+(width*0.0254634345 )),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular((height*0.00605730207/2)+(width* 0.01273171725/2)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(0, 2), // Shadow position from bottom
-                          ),
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(2, 0), // Shadow position from right
-                          ),
-                        ],
-                      ),
+                      hintText: widget.location.toString(),
+                      hintStyle: TextStyle(
+                          color: Color(0xff989696),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400)),
+                ),
+                padding: EdgeInsets.only(
+                    left: width * 0.0050926869,
+                    bottom: height * 0.01211460415),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(
+                      (height * 0.00605730207 / 2) +
+                          (width * 0.01273171725 / 2)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 2.0,
+                      offset: Offset(0, 2), // Shadow position from bottom
                     ),
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 2.0,
+                      offset: Offset(2, 0), // Shadow position from right
+                    ),
+                  ],
+                ),
+              ),
                     SizedBox(height: height*0.01817190623 ,),
                     Text("Date",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height* 0.01211460415 ,),
@@ -323,7 +336,7 @@ class _EditEventState extends State<EditEvent> {
                             ],
                           ),
                           child:  Text(
-                            selectedDate != null ? selectedDate.toString() : 'DD / MM / YYYY',
+                            selectedDate != null ? selectedDate.toString() : widget.date.toString(),
                             style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),
                           ),
 
@@ -343,43 +356,51 @@ class _EditEventState extends State<EditEvent> {
                     Text("Start-Time",style: TextStyle(color: Color(0xff000000),fontSize: 16.sp,fontWeight: FontWeight.w400),),
                     SizedBox(height: height* 0.01211460415 ,),
                     Container(
-                      height: height * 0.06057302077,
-                      width: width * 0.4,
-                      child: TextField(
-                        controller: timeController,
-                        decoration:
-                            new InputDecoration.collapsed(hintText: 'XX : XX'),
+                height: height * 0.06057302077,
+                width: width*0.390000,
+                child: TextField(
+                  controller: timeController,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                          left: width * 0.023926869,
+                        bottom: height * 0.01211460415,
                       ),
-                      // Text("XX : XX",style: TextStyle(fontSize: 12.sp,color: Color(0xff989696)),),
-                      padding: EdgeInsets.all((height * 0.01211460415 / 2) +
-                          (width * 0.0254634345)),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(
-                            (height * 0.00605730207 / 2) +
-                                (width * 0.01273171725 / 2)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(0, 2), // Shadow position from bottom
-                          ),
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(2, 0), // Shadow position from right
-                          ),
-                        ],
-                      ),
+                      hintText: widget.startTime.toString(),
+                      hintStyle: TextStyle(
+                          color: Color(0xff989696),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400)),
+                ),
+                padding: EdgeInsets.only(
+                    left: width * 0.0050926869,
+                    bottom: height * 0.01211460415),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(
+                      (height * 0.00605730207 / 2) +
+                          (width * 0.01273171725 / 2)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 2.0,
+                      offset: Offset(0, 2), // Shadow position from bottom
                     ),
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 2.0,
+                      offset: Offset(2, 0), // Shadow position from right
+                    ),
+                  ],
+                ),
+              ),
 
                   ],
                 ),
               ),
             ),
             Padding(
-              padding:  EdgeInsets.only(top: height*0.03634381246 ),
+              padding:  EdgeInsets.only(top: height*0.008034381246 ),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -394,7 +415,12 @@ class _EditEventState extends State<EditEvent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(alignment: Alignment.topLeft,
-                      child: Text("TEAM - 01",style: TextStyle(color: Color(0xff000000)),)),
+                      child: Text("TEAM - 01",
+                      style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
+                      )),
                   SizedBox(height: height* 0.01211460415,),
                   Align(alignment: Alignment.topLeft,
                       child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
@@ -405,13 +431,13 @@ class _EditEventState extends State<EditEvent> {
                       controller: team1Controller,
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
-                          hintText: "XYZ",
+                          hintText: widget.team1.toString(),
                           hintStyle: TextStyle(color: Color(0xff989696),fontSize: 12.sp,fontWeight: FontWeight.w400)
 
                       ),
 
                     ),
-                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
+                    padding: EdgeInsets.only(  left: width * 0.023926869,bottom: height* 0.01211460415 ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
@@ -435,45 +461,25 @@ class _EditEventState extends State<EditEvent> {
                   SizedBox(height: height*0.01211460415,),
                    _imageFile1==null? InkWell(
                   onTap: () => _pickImage(false),
-                   child: Container(
-                      height: height * 0.09691683324,
+                   child:  Container(
                       width: width * 0.20370747606,
-                      child:  Center(
-                          child: Text(
-                        "+",
-                        style:
-                            TextStyle(fontSize: 30.sp, color: Color(0xff989696)),
-                      ),)//Text('hello') ,
-                     ,
-                      padding: EdgeInsets.all(
-                          (height * 0.01211460415 / 2) + (width * 0.0254634345)),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(
-                            (height * 0.00605730207 / 2) +
-                                (width * 0.01273171725 / 2)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(0, 2), // Shadow position from bottom
-                          ),
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(2, 0), // Shadow position from right
-                          ),
-                        ],
+                      height: height * 0.09691683324,
+                      child: Container(
+                                            decoration: BoxDecoration(                                     
+                                              image: DecorationImage(
+                                                image: NetworkImage(widget.image1.toString()),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
                       ),
-                    ),
                  ): Container( height: height * 0.09691683324,
                       width: width * 0.20370747606,child:Image.file( _imageFile1!) ,) ,
                 ],
               ),
             ),
             Padding(
-              padding:  EdgeInsets.only(top: height*0.03634381246 ),
+              padding:  EdgeInsets.only(top:  height*0.008034381246 ),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -488,7 +494,12 @@ class _EditEventState extends State<EditEvent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Align(alignment: Alignment.topLeft,
-                      child: Text("TEAM - 02",style: TextStyle(color: Color(0xff000000)),)),
+                      child: Text("TEAM - 02",
+                       style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
+                      )),
                   SizedBox(height: height* 0.01211460415,),
                   Align(alignment: Alignment.topLeft,
                       child: Text("Enter team name",style: TextStyle(color: Color(0xff000000)),)),
@@ -499,13 +510,13 @@ class _EditEventState extends State<EditEvent> {
                       controller: team2Controller,
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(left: width*0.0050926869,bottom:  height* 0.01211460415,),
-                          hintText: "ABC",
+                          hintText:  widget.team2.toString(),
                           hintStyle: TextStyle(color: Color(0xff989696),fontSize: 12.sp,fontWeight: FontWeight.w400)
 
                       ),
 
                     ),
-                    padding: EdgeInsets.only(left: width* 0.0050926869,bottom: height* 0.01211460415 ),
+                    padding: EdgeInsets.only(  left: width * 0.023926869,bottom: height* 0.01211460415 ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.grey),
@@ -530,48 +541,66 @@ class _EditEventState extends State<EditEvent> {
                 _imageFile==null? InkWell(
                   onTap: () => _pickImage(true),
                    child: Container(
-                      height: height * 0.09691683324,
                       width: width * 0.20370747606,
-                      child:  Center(
-                          child: Text(
-                        "+",
-                        style:
-                            TextStyle(fontSize: 30.sp, color: Color(0xff989696)),
-                      ),)//Text('hello') ,
-                     ,
-                      padding: EdgeInsets.all(
-                          (height * 0.01211460415 / 2) + (width * 0.0254634345)),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(
-                            (height * 0.00605730207 / 2) +
-                                (width * 0.01273171725 / 2)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(0, 2), // Shadow position from bottom
-                          ),
-                          BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 2.0,
-                            offset: Offset(2, 0), // Shadow position from right
-                          ),
-                        ],
+                      height: height * 0.09691683324,
+                      child: Container(
+                                            decoration: BoxDecoration(                                     
+                                              image: DecorationImage(
+                                                image: NetworkImage(widget.image2.toString()),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
                       ),
-                    ),
                  ): Container( height: height * 0.09691683324,
                       width: width * 0.20370747606,child:Image.file( _imageFile!) ,)
                 ],
               ),
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901 ),
-              child: RoundButton(title: 'SAVE EVENT',onTap: (){
-              _uploadData1();
-
-              }, color: Color(0xff3854DC),),
+              padding:  EdgeInsets.symmetric(horizontal: width* 0.05092686901,vertical: height*0.02 ),
+              child: ElevatedButton(
+                child: isLoading ? CircularProgressIndicator(color: Colors.white,) : Text('SAVE EVENT',style: TextStyle(color: Colors.white),),
+               style: ElevatedButton.styleFrom(
+                    minimumSize: Size(width*0.78, height*0.056),
+                    backgroundColor: Color(0xff3854DC), // Change the background color here
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24.0),
+                    ),
+                      ),
+              onPressed:  (){
+                
+              
+                if(timeController.text!=""||locationController.text!=""||team1Controller.text!=""||team2Controller.text!=""||_imageFile!=null||_imageFile1!=null||selectedDate!=null||selectedOption!=matchOptions[0]){
+                 
+                                 _uploadData1();
+                }else{
+                 
+                   showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                      
+                       title: Text('Error', style: TextStyle(color: Color(0xff3854DC))),
+                        content: Text('Failed to Update Event info. No changes to update.'),
+                       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: Text('OK', style: TextStyle(color: Color(0xff3854DC))),
+                      ),
+                    ],
+                      );
+                    });                   
+                }
+              
+              }, 
+              ),
             )
           ],
         ),

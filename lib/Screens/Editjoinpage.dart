@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/notification/notification_service.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'Confirmation page.dart';
 import 'Informationadded.dart';
 
 class Editjoinpage extends StatefulWidget {
@@ -39,9 +38,10 @@ class Editjoinpage extends StatefulWidget {
 }
 
 class _EditjoinpageState extends State<Editjoinpage> {
+  late int _age;
   double height = 0;
   double width = 0;
-  int _age = 12; // Initial age value
+  // int _age = 12; // Initial age value
   String? UpdatedImageUrl;
   String? UpdatedSeletedTeam;
   String? UpdatedUnseletedTeamImageUrl;
@@ -49,37 +49,61 @@ class _EditjoinpageState extends State<Editjoinpage> {
   final updatedName = TextEditingController();
   final updatedPhoneNumber = TextEditingController();
 
-  void editEnrollment()async{
- try {
-   
-    CollectionReference usersCollection = FirebaseFirestore.instance.collection("enrollmentData");
+  void editEnrollment() async {
+    try {
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection("enrollmentData");
 
-    // Update the fields you want to edit in the user document
-    Map<String, dynamic> updatedData = {
-      'name': updatedName.text.toString(),
-      'phoneNumber': updatedPhoneNumber.text.toString(), 
-      'teamName': UpdatedSeletedTeam,
-      'teamImageUrl':UpdatedImageUrl, 
-      'unselectedTeamName':UpdatedUnselectedTeamName,
-      'unselectedTeamImageUrl':UpdatedUnseletedTeamImageUrl,
-      "age":_age.toString()
-    };
+      // Update the fields you want to edit in the user document
+      Map<String, dynamic> updatedData = {
+        'name': updatedName.text == ""
+            ? widget.name.toString()
+            : updatedName.text.toString(),
+        'phoneNumber': updatedPhoneNumber.text == ""
+            ? widget.phoneNumber.toString()
+            : updatedPhoneNumber.text.toString(),
+        'teamName': UpdatedSeletedTeam == null
+            ? widget.seletedTeamName.toString()
+            : UpdatedSeletedTeam,
+        'teamImageUrl': UpdatedImageUrl == null
+            ? widget.selectedTeamImage
+            : UpdatedImageUrl,
+        'unselectedTeamName': UpdatedUnselectedTeamName == null
+            ? widget.unselectedTeamName.toString()
+            : UpdatedUnselectedTeamName,
+        'unselectedTeamImageUrl': UpdatedUnseletedTeamImageUrl == null
+            ? widget.unseletedTeamImageUrl.toString()
+            : UpdatedUnseletedTeamImageUrl,
+        "age": _age.toString()
+      };
 
-    // Perform the update operation
-    await usersCollection.doc(widget.documentUniqueId.toString()).update(updatedData).then((value) => {
-     Navigator.push(
-         context,
-          MaterialPageRoute(
-        builder: (context) => EditedConfirmation()))
-    });
+      // Perform the update operation
+      await usersCollection
+          .doc(widget.documentUniqueId.toString())
+          .update(updatedData)
+          .then((value) => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditedConfirmation())),
+                NotificationService().showNotification(
+                    title: 'Event edited successfully',
+                    body: 'Succesfully edited')
+              });
 
-    print('enrollment data updated successfully.');
-  } catch (e) {
-    print('Error updating enrollment data: $e');
+      print('enrollment data updated successfully.');
+    } catch (e) {
+      print('Error updating enrollment data: $e');
+    }
   }
 
-}
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    String ageToParse = widget.age.toString();
+    _age = int.parse(ageToParse);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +114,14 @@ class _EditjoinpageState extends State<Editjoinpage> {
         backgroundColor: const Color(0xff3854DC),
         leading: Padding(
           padding: EdgeInsets.only(left: width * 0.05092686901),
-          child: Image.asset(
-            "assets/arrow.png",
-            width: width * 0.0254634345,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Image.asset(
+              "assets/arrow.png",
+              // width: width * 0.0254634345,
+            ),
           ),
         ),
         title: Text(
@@ -103,15 +132,6 @@ class _EditjoinpageState extends State<Editjoinpage> {
               fontSize: 24.sp),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(left: width * 0.05092686901),
-            child: Image.asset(
-              "assets/noti.png",
-              width: width * 0.07639030352,
-            ),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -178,6 +198,9 @@ class _EditjoinpageState extends State<Editjoinpage> {
                         )
                       ],
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       children: [
                         Text(
@@ -188,14 +211,14 @@ class _EditjoinpageState extends State<Editjoinpage> {
                               fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
-                          width: width * 0.0305561214,
+                          width: width * 0.0895561214,
                         ),
                         Image.asset(
                           "assets/loc.png",
                           width: width * 0.03819515176,
                         ),
                         SizedBox(
-                          width: width * 0.0050926869,
+                          width: width * 0.020926869,
                         ),
                         Text(
                           "Location: ${widget.location.toString()}",
@@ -231,8 +254,10 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           children: [
                             InkWell(
                               onTap: () {
-                                UpdatedImageUrl = widget.selectedTeamImage.toString();
-                                UpdatedSeletedTeam = widget.seletedTeamName.toString();
+                                UpdatedImageUrl =
+                                    widget.selectedTeamImage.toString();
+                                UpdatedSeletedTeam =
+                                    widget.seletedTeamName.toString();
                                 UpdatedUnseletedTeamImageUrl =
                                     widget.unseletedTeamImageUrl.toString();
                                 UpdatedUnselectedTeamName =
@@ -354,7 +379,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: width * 0.05092686901),
+                          padding: EdgeInsets.only(left: width * 0.09192686901),
                           child: Container(
                             width: width * 0.23553676919,
                             height: height * 0.04966987703,
@@ -377,8 +402,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                               children: [
                                 Container(
                                   width: width * 0.07639030352,
-                                  child: Center(
-                                      child: Text("$_age")),
+                                  child: Center(child: Text("$_age")),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
@@ -390,8 +414,8 @@ class _EditjoinpageState extends State<Editjoinpage> {
                                         InkWell(
                                             onTap: () {
                                               setState(() {
-                                                if (_age > 0) {
-                                                  _age--;
+                                                if (_age >= 0) {
+                                                  _age++;
                                                 }
                                               });
                                             },
@@ -405,7 +429,7 @@ class _EditjoinpageState extends State<Editjoinpage> {
                                         InkWell(
                                             onTap: () {
                                               setState(() {
-                                                _age++;
+                                                if (_age >= 2) _age--;
                                               });
                                             },
                                             child: Image.asset(
@@ -474,7 +498,43 @@ class _EditjoinpageState extends State<Editjoinpage> {
                     RoundButton(
                       title: "SAVE",
                       onTap: () {
-                       editEnrollment();
+                        if (updatedName.text != "" ||
+                            updatedPhoneNumber.text != "" ||
+                            UpdatedImageUrl != null ||
+                            UpdatedSeletedTeam != null ||
+                            UpdatedUnseletedTeamImageUrl != null ||
+                            UpdatedUnselectedTeamName != null ||
+                            _age.toString() != widget.age.toString()) {
+                          editEnrollment();
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Error',
+                                      style:
+                                          TextStyle(color: Color(0xff3854DC))),
+                                  content: Text(
+                                      'Failed to Update joining info. No changes to update.'),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: Text('OK',
+                                          style: TextStyle(
+                                              color: Color(0xff3854DC))),
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
                       },
                       color: Color(0xff3854DC),
                     )

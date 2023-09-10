@@ -1,14 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
 import 'Startup.dart';
-
-
-
-
-
 
 class Startup1 extends StatefulWidget {
   const Startup1({Key? key}) : super(key: key);
@@ -26,7 +19,7 @@ class Startup1State extends State<Startup1> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    
 
     move();
   }

@@ -68,6 +68,8 @@ class FirebaseServices {
       "age":age,
       "name":name,
       "username": username,
+      "profilePicture":"",
+      "bio":"",
 
     });
     Fluttertoast.showToast(msg: "Account created successfully ");

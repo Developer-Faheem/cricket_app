@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/notification/notification_service.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -6,37 +7,32 @@ import 'Editjoinpage.dart';
 import 'Leave confirm.dart';
 
 class Enrolledevent extends StatefulWidget {
+  final String match;
+  final String location;
+  final String date;
+  final String startTime;
+  final String seletedTeamName;
+  final String name;
+  final String age;
+  final String phoneNumber;
+  final String selectedTeamImage;
+  final String documentUniqueId;
+  final String unselectedTeamName;
+  final String unseletedTeamImageUrl;
 
-
-   final String  match;
-   final  String  location;
-   final  String  date;
-   final  String  startTime;
-   final  String  seletedTeamName;
-   final  String  name;
-   final  String  age;
-   final  String  phoneNumber;
-   final  String selectedTeamImage;
-   final  String documentUniqueId;
-   final  String unselectedTeamName;
-   final  String unseletedTeamImageUrl;
-   
-
-
-   Enrolledevent({
-    required this.unseletedTeamImageUrl,
-    required this.unselectedTeamName,
-    required this.selectedTeamImage,
-    required this.match,
-    required this.location,
-    required this.date,
-    required this.startTime,
-    required this.seletedTeamName,
-    required this.name,
-    required this.age,
-    required this.phoneNumber,
-     required this.documentUniqueId
-  });
+  Enrolledevent(
+      {required this.unseletedTeamImageUrl,
+      required this.unselectedTeamName,
+      required this.selectedTeamImage,
+      required this.match,
+      required this.location,
+      required this.date,
+      required this.startTime,
+      required this.seletedTeamName,
+      required this.name,
+      required this.age,
+      required this.phoneNumber,
+      required this.documentUniqueId});
 
   @override
   State<Enrolledevent> createState() => _EnrolledeventState();
@@ -47,33 +43,27 @@ class _EnrolledeventState extends State<Enrolledevent> {
   double width = 0;
   int _age = 12; // Initial age value
 
- 
-
-  
   void deleteDocument() async {
-  try {
+    try {
+      // Get a reference to the document
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection('enrollmentData')
+          .doc(widget.documentUniqueId.toString());
 
-    
-    // Get a reference to the document
-    DocumentReference documentReference = FirebaseFirestore.instance
-        .collection('enrollmentData')
-        .doc(widget.documentUniqueId.toString());
+      // Delete the document
+      await documentReference.delete().then((value) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Leaveconfirm()));
 
-    // Delete the document
-    await documentReference.delete().then((value){
-     
-       Navigator.push(
-          context,
-         MaterialPageRoute(
-        builder: (context) =>
-          Leaveconfirm())); 
-    });
+        NotificationService().showNotification(
+            title: 'Event created successfully', body: 'Succesfully created');
+      });
 
-    print('Event leaved  successfully.');
-  } catch (e) {
-    print('Error leaving Evemnt : $e');
+      print('Event leaved  successfully.');
+    } catch (e) {
+      print('Error leaving Evemnt : $e');
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +74,14 @@ class _EnrolledeventState extends State<Enrolledevent> {
         backgroundColor: const Color(0xff3854DC),
         leading: Padding(
           padding: EdgeInsets.only(left: width * 0.05092686901),
-          child: Image.asset(
-            "assets/arrow.png",
-            width: width * 0.0254634345,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Image.asset(
+              "assets/arrow.png",
+              width: width * 0.0254634345,
+            ),
           ),
         ),
         title: Text(
@@ -97,22 +92,13 @@ class _EnrolledeventState extends State<Enrolledevent> {
               fontSize: 24.sp),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(left: width * 0.05092686901),
-            child: Image.asset(
-              "assets/noti.png",
-              width: width * 0.07639030352,
-            ),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               width: double.infinity,
-              height: height* 0.28012773824,
+              height: height * 0.28012773824,
               child: Image.asset(
                 "assets/Status5.png",
                 width: double.infinity,
@@ -122,9 +108,10 @@ class _EnrolledeventState extends State<Enrolledevent> {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(width*0.0254634345 /2 + height*0.01211460415 /2),
+                borderRadius: BorderRadius.circular(
+                    width * 0.0254634345 / 2 + height * 0.01211460415 / 2),
                 color: Colors.white,
-                boxShadow:  [
+                boxShadow: [
                   BoxShadow(
                     color: Colors.black38.withOpacity(0.5),
                     spreadRadius: 2,
@@ -135,7 +122,10 @@ class _EnrolledeventState extends State<Enrolledevent> {
                 shape: BoxShape.rectangle,
               ),
               child: Padding(
-                padding:  EdgeInsets.only(left:width*0.05092686901  , top: height*0.01211460415, bottom: height*0.01211460415),
+                padding: EdgeInsets.only(
+                    left: width * 0.05092686901,
+                    top: height * 0.01211460415,
+                    bottom: height * 0.01211460415),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -157,7 +147,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
-                          width: width*0.07639030352 ,
+                          width: width * 0.07639030352,
                         ),
                         Text(
                           "Date: ${widget.date.toString()}",
@@ -167,6 +157,9 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               fontWeight: FontWeight.w400),
                         )
                       ],
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Row(
                       children: [
@@ -178,14 +171,14 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
-                          width: width* 0.0305561214,
+                          width: width * 0.0895561214,
                         ),
                         Image.asset(
                           "assets/loc.png",
-                          width: width*0.03819515176,
+                          width: width * 0.03819515176,
                         ),
                         SizedBox(
-                          width: width*0.0050926869,
+                          width: width * 0.020926869,
                         ),
                         Text(
                           "Location: ${widget.location.toString()}",
@@ -202,8 +195,9 @@ class _EnrolledeventState extends State<Enrolledevent> {
             ),
             Container(
               child: Padding(
-
-                padding:  EdgeInsets.symmetric(vertical: height*0.04845841662, horizontal: width*0.05092686901 ),
+                padding: EdgeInsets.symmetric(
+                    vertical: height * 0.04845841662,
+                    horizontal: width * 0.05092686901),
                 child: Column(
                   children: [
                     Align(
@@ -214,22 +208,25 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Editjoinpage(
-                                              unseletedTeamImageUrl:widget.unseletedTeamImageUrl,
-                                              unselectedTeamName:widget.unselectedTeamName,
-                                              match: widget.match, 
-                                              location: widget.location,
-                                              date: widget.date,
-                                              startTime: widget.startTime,
-                                              seletedTeamName: widget.seletedTeamName, 
-                                            //  team2: team2,
-                                              selectedTeamImage:widget.selectedTeamImage,
-                                              name:widget.name,
-                                              age:widget.age,
-                                              phoneNumber:widget.phoneNumber,
-                                              // image2: image2,
-                                              documentUniqueId: widget.documentUniqueId
-
-                                      )));
+                                          unseletedTeamImageUrl:
+                                              widget.unseletedTeamImageUrl,
+                                          unselectedTeamName:
+                                              widget.unselectedTeamName,
+                                          match: widget.match,
+                                          location: widget.location,
+                                          date: widget.date,
+                                          startTime: widget.startTime,
+                                          seletedTeamName:
+                                              widget.seletedTeamName,
+                                          //  team2: team2,
+                                          selectedTeamImage:
+                                              widget.selectedTeamImage,
+                                          name: widget.name,
+                                          age: widget.age,
+                                          phoneNumber: widget.phoneNumber,
+                                          // image2: image2,
+                                          documentUniqueId:
+                                              widget.documentUniqueId)));
                             },
                             child: Image.asset(
                               "assets/edit.png",
@@ -251,31 +248,25 @@ class _EnrolledeventState extends State<Enrolledevent> {
                         Column(
                           children: [
                             Container(
-                                                        width: width *
-                                                            0.07639030352,
-                                                        height: width *
-                                                            0.07639030352,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius: BorderRadius
-                                                              .circular(width *
-                                                                  0.03819515176),
-                                                          image:
-                                                              DecorationImage(
-                                                            image: NetworkImage(
-                                                           widget.selectedTeamImage.toString()
-                                                               ),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                             Text(widget.seletedTeamName.toString()),
+                              width: width * 0.07639030352,
+                              height: width * 0.07639030352,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    width * 0.03819515176),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      widget.selectedTeamImage.toString()),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Text(widget.seletedTeamName.toString()),
                           ],
                         )
                       ],
                     ),
                     SizedBox(
-                      height: height*0.02422920831 ,
+                      height: height * 0.02422920831,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -288,13 +279,14 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               fontSize: 15.sp),
                         ),
                         Container(
-                          width: width*0.45834182114,
-                          height: height*0.04845841662,
-
-                            decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
+                          width: width * 0.45834182114,
+                          height: height * 0.04845841662,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                width * 0.01273171725 / 2 +
+                                    height * 0.00605730207),
                             color: Colors.white,
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
                                 color: Colors.black38.withOpacity(0.5),
                                 spreadRadius: 2,
@@ -305,7 +297,9 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             shape: BoxShape.rectangle,
                           ),
                           child: Padding(
-                            padding:  EdgeInsets.only(left: width*0.0254634345 , top:height*0.00605730207 ),
+                            padding: EdgeInsets.only(
+                                left: width * 0.0254634345,
+                                top: height * 0.00605730207),
                             child: Text(
                               widget.name.toString(),
                               style: TextStyle(
@@ -317,8 +311,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                         )
                       ],
                     ),
-                     SizedBox(
-                      height: height*0.02422920831 ,
+                    SizedBox(
+                      height: height * 0.02422920831,
                     ),
                     Row(
                       children: [
@@ -331,16 +325,16 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(left: width* 0.05092686901 ),
+                          padding: EdgeInsets.only(left: width * 0.09192686901),
                           child: Container(
-                            width: width*0.23553676919,
-                            height: height*0.04966987703,
-
-
+                            width: width * 0.23553676919,
+                            height: height * 0.04966987703,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
+                              borderRadius: BorderRadius.circular(
+                                  width * 0.01273171725 / 2 +
+                                      height * 0.00605730207),
                               color: Colors.white,
-                              boxShadow:  [
+                              boxShadow: [
                                 BoxShadow(
                                   color: Colors.black38.withOpacity(0.5),
                                   spreadRadius: 2,
@@ -353,14 +347,15 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             child: Row(
                               children: [
                                 Container(
-                                  width: width*0.07639030352 ,
-                                  child: Center(child: Text(widget.age.toString())),
+                                  width: width * 0.07639030352,
+                                  child: Center(
+                                      child: Text(widget.age.toString())),
                                 ),
                                 Padding(
-                                  padding:  EdgeInsets.only(left: width*0.05092686901,top: height*0.00484425713),
+                                  padding: EdgeInsets.only(
+                                      left: width * 0.05092686901,
+                                      top: height * 0.00484425713),
                                   child: Container(
-
-
                                     child: Column(
                                       children: [
                                         InkWell(
@@ -371,20 +366,23 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                                 }
                                               });
                                             },
-
-                                            child: Image.asset("assets/Vector 5.png",width: width*0.05092686901,)),
-                                        SizedBox(height: height*0.00605730207,),
-
+                                            child: Image.asset(
+                                              "assets/Vector 5.png",
+                                              width: width * 0.05092686901,
+                                            )),
+                                        SizedBox(
+                                          height: height * 0.00605730207,
+                                        ),
                                         InkWell(
                                             onTap: () {
                                               setState(() {
                                                 _age++;
                                               });
                                             },
-
-                                            child: Image.asset("assets/Vector 6.png",width: width* 0.05092686901 ,)),
-
-
+                                            child: Image.asset(
+                                              "assets/Vector 6.png",
+                                              width: width * 0.05092686901,
+                                            )),
                                       ],
                                     ),
                                   ),
@@ -396,7 +394,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                       ],
                     ),
                     SizedBox(
-                      height: height*0.02422920831 ,
+                      height: height * 0.02422920831,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -409,12 +407,14 @@ class _EnrolledeventState extends State<Enrolledevent> {
                               fontSize: 15.sp),
                         ),
                         Container(
-                          width: width*0.45834182114,
-                          height: height*0.06057302077,
+                          width: width * 0.45834182114,
+                          height: height * 0.06057302077,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(width*0.01273171725/2 + height*0.00605730207),
+                            borderRadius: BorderRadius.circular(
+                                width * 0.01273171725 / 2 +
+                                    height * 0.00605730207),
                             color: Colors.white,
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
                                 color: Colors.black38.withOpacity(0.5),
                                 spreadRadius: 2,
@@ -425,9 +425,11 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             shape: BoxShape.rectangle,
                           ),
                           child: Padding(
-                            padding:  EdgeInsets.only(left: width*0.01273171725, top: height* 0.01211460415 ),
+                            padding: EdgeInsets.only(
+                                left: width * 0.01273171725,
+                                top: height * 0.01211460415),
                             child: Text(
-                              widget.date.toString(),
+                              widget.phoneNumber.toString(),
                               style: TextStyle(
                                   color: Color(0xff989696),
                                   fontSize: 13.sp,
@@ -438,7 +440,7 @@ class _EnrolledeventState extends State<Enrolledevent> {
                       ],
                     ),
                     SizedBox(
-                      height: height*0.02422920831 ,
+                      height: height * 0.02422920831,
                     ),
                     RoundButton(
                       title: "LEAVE EVENT",
@@ -448,8 +450,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                           builder: (context) => AlertDialog(
                             backgroundColor: Color(0xff3854DC),
                             title: Center(
-                                child:
-                                    Image.asset("assets/boy.png", width:width*0.25463434508)),
+                                child: Image.asset("assets/boy.png",
+                                    width: width * 0.25463434508)),
                             content: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -468,8 +470,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                             ),
                             actions: [
                               Container(
-                                width: width*0.30556121409,
-                                height: height*0.04845841662,
+                                width: width * 0.30556121409,
+                                height: height * 0.04845841662,
                                 color: Color(0xffFFFFFFDB),
                                 child: TextButton(
                                   onPressed: () {
@@ -489,8 +491,8 @@ class _EnrolledeventState extends State<Enrolledevent> {
                                 ),
                               ),
                               Container(
-                                width: width*0.30556121409,
-                                height: height*0.04845841662,
+                                width: width * 0.30556121409,
+                                height: height * 0.04845841662,
                                 color: Color(0xffFFFFFFDB),
                                 child: TextButton(
                                   onPressed: () {

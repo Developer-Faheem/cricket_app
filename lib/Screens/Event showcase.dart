@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/notification/notification_service.dart';
 import 'package:cricket_app/widget/Roundbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
-import 'Create events.dart';
 import 'Edit event.dart';
-import 'JOIN PAGE.dart';
-import 'Mesage event.dart';
 import 'delete confirm.dart';
 
 class Eventshowcase extends StatefulWidget {
@@ -28,41 +25,32 @@ class Eventshowcase extends StatefulWidget {
       required this.match,
       required this.startTime,
       required this.team1,
-      required this.team2
-      ,required this.uid});
+      required this.team2,
+      required this.uid});
 
   @override
   State<Eventshowcase> createState() => _EventshowcaseState();
 }
 
 class _EventshowcaseState extends State<Eventshowcase> {
-
-
   void deleteDocument() async {
-  try {
-  
- 
-    // Get a reference to the document
-    DocumentReference documentReference = FirebaseFirestore.instance
-        .collection('match')
-        .doc(widget.uid.toString());
-
-    // Delete the document
-    await documentReference.delete().then((value){
-     
-       Navigator.push(
-           context,
-          MaterialPageRoute(
-             builder: (context) =>
-        deleteconfirm()));
-    });
-
-    print('Document deleted successfully.');
-  } catch (e) {
-    print('Error deleting document: $e');
+    try {
+      // Get a reference to the document
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection('match')
+          .doc(widget.uid.toString());
+      // Delete the document
+      await documentReference.delete().then((value) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => deleteconfirm()));
+        NotificationService().showNotification(
+            title: 'Event deleted successfully', body: 'Succesfully deleted');
+      });
+      print('Document deleted successfully.');
+    } catch (e) {
+      print('Error deleting document: $e');
+    }
   }
-}
-
 
   double height = 0;
   double width = 0;
@@ -76,9 +64,14 @@ class _EventshowcaseState extends State<Eventshowcase> {
         backgroundColor: const Color(0xff3854DC),
         leading: Padding(
           padding: EdgeInsets.only(left: width * 0.05092686901),
-          child: Image.asset(
-            "assets/arrow.png",
-            width: width * 0.0254634345,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Image.asset(
+              "assets/arrow.png",
+              width: width * 0.0254634345,
+            ),
           ),
         ),
         title: Text(
@@ -89,15 +82,15 @@ class _EventshowcaseState extends State<Eventshowcase> {
               fontSize: 24.sp),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: width * 0.05092686901),
-            child: Image.asset(
-              "assets/noti.png",
-              width: width * 0.07639030352,
-            ),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.only(right: width * 0.05092686901),
+        //     child: Image.asset(
+        //       "assets/noti.png",
+        //       width: width * 0.07639030352,
+        //     ),
+        //   )
+        // ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -135,17 +128,16 @@ class _EventshowcaseState extends State<Eventshowcase> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EditEvent(
-                                              match: widget.match,
-                                              location: widget.location,
-                                              date: widget.date,
-                                              startTime: widget.startTime,
-                                              team1: widget.team1,
-                                              team2: widget.team2,
-                                              image1: widget.image1,
-                                              image2: widget.image2,
-                                              uid: widget.uid,
-                                      
-                                      )));
+                                            match: widget.match,
+                                            location: widget.location,
+                                            date: widget.date,
+                                            startTime: widget.startTime,
+                                            team1: widget.team1,
+                                            team2: widget.team2,
+                                            image1: widget.image1,
+                                            image2: widget.image2,
+                                            uid: widget.uid,
+                                          )));
                             },
                             child: Image.asset(
                               "assets/edit.png",
@@ -329,7 +321,7 @@ class _EventshowcaseState extends State<Eventshowcase> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: height * 0.03634381246),
+              padding: EdgeInsets.only(top: height * 0.01034381246),
               child: Container(
                 child: Divider(
                   color: Color(0xffD9D9D9),
@@ -349,7 +341,10 @@ class _EventshowcaseState extends State<Eventshowcase> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         "TEAM - 01",
-                        style: TextStyle(color: Color(0xff000000)),
+                       style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
                       )),
                   SizedBox(
                     height: height * 0.01211460415,
@@ -404,17 +399,17 @@ class _EventshowcaseState extends State<Eventshowcase> {
                     height: height * 0.01211460415,
                   ),
                   Container(
-                      width: width * 0.20370747606,
-                      height: height * 0.09691683324,
-                      child: Container(
-                                            decoration: BoxDecoration(                                     
-                                              image: DecorationImage(
-                                                image: NetworkImage(widget.image1.toString()),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
+                    width: width * 0.20370747606,
+                    height: height * 0.09691683324,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(widget.image1.toString()),
+                          fit: BoxFit.cover,
+                        ),
                       ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -439,7 +434,10 @@ class _EventshowcaseState extends State<Eventshowcase> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         "TEAM - 02",
-                        style: TextStyle(color: Color(0xff000000)),
+                         style: TextStyle(
+                          color: Color(0xff000000),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400),
                       )),
                   SizedBox(
                     height: height * 0.01211460415,
@@ -494,96 +492,94 @@ class _EventshowcaseState extends State<Eventshowcase> {
                     height: height * 0.01211460415,
                   ),
                   Container(
-                      width: width * 0.20370747606,
-                      height: height * 0.09691683324,
-                      child: 
-                      Container(
-                                            decoration: BoxDecoration(                                     
-                                              image: DecorationImage(
-                                                image: NetworkImage(widget.image2.toString()),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
+                    width: width * 0.20370747606,
+                    height: height * 0.09691683324,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(widget.image2.toString()),
+                          fit: BoxFit.cover,
+                        ),
                       ),
+                    ),
+                  ),
                 ],
               ),
             ),
             Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: width * 0.05092686901),
-                child: RoundButton(
-                  title: "DELETE EVENT",
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        backgroundColor: Color(0xff3854DC),
-                        title: Center(
-                            child: Image.asset("assets/boy.png",
-                                width: width * 0.25463434508)),
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("Are you sure you want to delete",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Color(0xffFFFFFFDB),
-                                )),
-                            Text("the event?",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Color(0xffFFFFFFDB),
-                                )),
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.05092686901, vertical: height * 0.02),
+                child: Container(
+                  height: height * 0.056,
+                  width: width * 0.78,
+                  child: RoundButton(
+                    title: "DELETE EVENT",
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          backgroundColor: Color(0xff3854DC),
+                          title: Center(
+                              child: Image.asset("assets/boy.png",
+                                  width: width * 0.25463434508)),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("Are you sure you want to delete",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Color(0xffFFFFFFDB),
+                                  )),
+                              Text("the event?",
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Color(0xffFFFFFFDB),
+                                  )),
+                            ],
+                          ),
+                          actions: [
+                            Container(
+                              width: width * 0.30556121409,
+                              height: height * 0.04845841662,
+                              color: Color(0xffFFFFFFDB),
+                              child: TextButton(
+                                onPressed: () {
+                                  deleteDocument();
+                                },
+                                child: Text(
+                                  "Yes,I am sure.",
+                                  style: TextStyle(
+                                      color: Color(0xff0C0C0C),
+                                      fontSize: 7.sp,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: width * 0.30556121409,
+                              height: height * 0.04845841662,
+                              color: Color(0xffFFFFFFDB),
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.pop(
+                                      context); // Close the alert dialog
+                                },
+                                child: Text(
+                                  "No, I am not sure",
+                                  style: TextStyle(
+                                      color: Color(0xff0C0C0C),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 7.sp),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        actions: [
-                          Container(
-                            width: width * 0.30556121409,
-                            height: height * 0.04845841662,
-                            color: Color(0xffFFFFFFDB),
-                            child: TextButton(
-                              onPressed: () {
-                                // Perform the log out action here
-                                // For example, you can call a log out function or navigate to the log out screen
-                                // ...
-
-                                deleteDocument();
-                               // Close the alert dialog
-                              },
-                              child: Text(
-                                "Yes,I am sure.",
-                                style: TextStyle(
-                                    color: Color(0xff0C0C0C),
-                                    fontSize: 7.sp,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: width * 0.30556121409,
-                            height: height * 0.04845841662,
-                            color: Color(0xffFFFFFFDB),
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.pop(
-                                    context); // Close the alert dialog
-                              },
-                              child: Text(
-                                "No, I am not sure",
-                                style: TextStyle(
-                                    color: Color(0xff0C0C0C),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 7.sp),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  color: Color(0xff3854DC),
+                      );
+                    },
+                    color: Color(0xff3854DC),
+                  ),
                 ))
           ],
         ),

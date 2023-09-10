@@ -1,4 +1,6 @@
-import 'package:cricket_app/widget/Roundbutton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cricket_app/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -7,13 +9,84 @@ import 'Profile edit.dart';
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
+  
+
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+
+   String? email;
+   String? name;
+   String? userName; 
+   String? age;
+   String bio="";
+   String profilePicture="";
+
   double height = 0;
   double width = 0;
+
+
+void fetchProfileData() async {
+    try {
+      FirebaseAuth _auth = FirebaseAuth.instance;
+      User? user = _auth.currentUser;
+
+      if (user == null) {
+        print('User not signed in.');
+        //   return;
+      }
+
+      String userId = user!.uid;
+      print(userId);
+      print('---------------------+++++++++++++++++++++++++++++++++=');
+
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        .collection('Users data')
+        .doc(userId.toString())
+        .get();
+
+      // Check if the document exists before accessing its data
+if (userSnapshot.exists) {
+  // Access the data using the data() method
+  Map<String, dynamic> userData = userSnapshot.data() as Map<String,dynamic>;
+
+  // Now you can access individual fields in the document using their keys
+  setState(() {
+     name = userData['name']; // Replace 'field1' with your actual field name
+   userName = userData['username'];
+   email=userData['email'];
+   age = userData['age'];
+   profilePicture=userData['profilePicture'] ;
+     bio=userData['bio'] ;// Replace 'field2' with your actual field name
+  });
+  
+
+  print(name.toString());
+  print(userName);
+  // Do something with the data...
+} else {
+  // The document doesn't exist
+}
+
+  
+    } catch (e) {
+      print('Error fetching data: $e');
+      //return [];
+    }
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    fetchProfileData();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -22,13 +95,16 @@ class _ProfileState extends State<Profile> {
         child: Scaffold(
             appBar: AppBar(
               backgroundColor: const Color(0xff3854DC),
-              leading: Padding(
-                padding: EdgeInsets.only(left: width * 0.05092686901),
-                child: Image.asset(
-                  "assets/arrow.png",
-                  width: width * 0.0254634345,
-                ),
-              ),
+              automaticallyImplyLeading: false,
+              leading:  Padding(
+          padding:  EdgeInsets.only(left: width* 0.05092686901 ),
+          child: GestureDetector(onTap: (){
+           Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  btmnavigation()),
+                );
+          }, child: Image.asset("assets/arrow.png",width: width* 0.0254634345 ,)),
+        ),
               title: Text(
                 "CricSpotter",
                 style: TextStyle(
@@ -37,15 +113,7 @@ class _ProfileState extends State<Profile> {
                     fontSize: 24.sp),
               ),
               centerTitle: true,
-              actions: [
-                Padding(
-                  padding: EdgeInsets.only(left: width * 0.05092686901),
-                  child: Image.asset(
-                    "assets/noti.png",
-                    width: width * 0.07639030352,
-                  ),
-                )
-              ],
+            
             ),
             body: Container(
               child: SingleChildScrollView(
@@ -78,7 +146,14 @@ class _ProfileState extends State<Profile> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ProfileEdit()));
+                                          builder: (context) => ProfileEdit(
+                                            email:email,
+                                            name : name,
+                                            userName :userName,
+                                            age:age,
+                                            profilePicture:profilePicture,
+                                            bio:bio
+                                          )));
                                 },
                                 child: Image.asset(
                                   "assets/edit.png",
@@ -103,12 +178,18 @@ class _ProfileState extends State<Profile> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(width * 0.50926869016 / 2), // Same as the container's decoration
-                      child: Image.asset(
-                        "assets/pp.png",
-                        width: width * 0.50926869016,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                     child: profilePicture == "" 
+                              ? Image.asset(
+                                  "assets/pp.png",
+                                  width: width * 0.50926869016,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  profilePicture,
+                                  width: width * 0.50926869016,
+                                  fit: BoxFit.cover,
+                                ),
+                            ),
                   ),
                     ],
                   ),
@@ -133,7 +214,7 @@ class _ProfileState extends State<Profile> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: Text(
-                              "your name",
+                              "$name",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
@@ -177,7 +258,7 @@ class _ProfileState extends State<Profile> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: Text(
-                              "Username",
+                              "$userName",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
@@ -222,7 +303,7 @@ class _ProfileState extends State<Profile> {
                           height: height * 0.06057302077,
                           child: Center(
                             child: Text(
-                              "emai@gmail.com",
+                              email.toString(),
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                           ),
@@ -262,7 +343,7 @@ class _ProfileState extends State<Profile> {
                             width: double.infinity,
                             height: height * 0.06057302077,
                             child: Text(
-                              "your age",
+                              "$age",
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
@@ -293,7 +374,7 @@ class _ProfileState extends State<Profile> {
                             height: height * 0.01211460415,
                           ),
                           Text(
-                            "Address:",
+                            "Bio:",
                             style: TextStyle(
                                 color: Color(0xff000000),
                                 fontSize: 14.sp,
@@ -305,7 +386,7 @@ class _ProfileState extends State<Profile> {
                           Container(
                             width: double.infinity,
                             child: Text(
-                              "Cricket lover | Software engineer by day,cricketer by evening | Passionate about the game | Team player | Striving for sixes and wickets | Balancing code and cricket | living for the sound of leather on willow | Chasing boundaries and career goals | Making every match count!",
+                              bio==""? "please add your bio":bio.toString() ,
                               style: TextStyle(color: Color(0xff6E7781)),
                             ),
                             padding: EdgeInsets.all(height * 0.01211460415 / 2 +
